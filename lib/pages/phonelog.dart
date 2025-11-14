@@ -21,91 +21,94 @@ class _LoginState extends State<Login> {
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            /// ✅ Center content (Image + Texts + Input)
+            /// TOP CONTENT (Image + Text + Form)
             Expanded(
-              child: Center(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      /// ✅ Image
-                      Image.asset(
-                        'assets/images/log.png', // 👈 change this image path
-                        width: width * 0.6,
-                        height: height * 0.35,
-                      ),
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: height * 0.03),
 
-                      SizedBox(height: height * 0.03),
-
-                      /// ✅ Heading (aligned to right)
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '  Hello!',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: width * 0.06,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        /// Image
+                        Image.asset(
+                          'assets/images/log.png',
+                          width: width * 0.6,
+                          height: height * 0.35,
                         ),
-                      ),
 
-                      SizedBox(height: height * 0.001),
+                        SizedBox(height: height * 0.03),
 
-                      /// ✅ Subtext (aligned to right)
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '  Enter your phone number',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: width * 0.04,
-                          ),
-                        ),
-                      ),
-
-                      SizedBox(height: height * 0.01),
-
-                      /// ✅ Input field
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          controller: _phoneController,
-                          keyboardType: TextInputType.phone,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            hintText: 'Enter your phone number',
-                            hintStyle: const TextStyle(color: Colors.white54),
-                            filled: true,
-                            fillColor: Colors.grey[900],
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide.none,
+                        /// Heading
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '  Hello!',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: width * 0.06,
+                              fontWeight: FontWeight.bold,
                             ),
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 16),
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your phone number';
-                            } else if (value.length != 10) {
-                              return 'Enter a valid 10-digit number';
-                            }
-                            return null;
-                          },
                         ),
-                      ),
-                    ],
+
+                        SizedBox(height: height * 0.001),
+
+                        /// Subtext
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '  Enter your phone number',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: width * 0.04,
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(height: height * 0.015),
+
+                        /// Phone Input
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            controller: _phoneController,
+                            keyboardType: TextInputType.phone,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              hintText: 'Enter your phone number',
+                              hintStyle: const TextStyle(color: Colors.white54),
+                              filled: true,
+                              fillColor: Colors.grey[900],
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 16),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your phone number';
+                              } else if (value.length != 10) {
+                                return 'Enter a valid 10-digit number';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
 
-            /// ✅ Send OTP Button (bottom)
+            /// BOTTOM BUTTON
             Padding(
               padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).padding.bottom + height * 0.05,
@@ -124,8 +127,7 @@ class _LoginState extends State<Login> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // 👇 Navigation using GoRouter
-                      context.go('/otp'); // replace '/otp' with your route path
+                      context.go('/otp');
                     }
                   },
                   child: Text(

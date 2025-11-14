@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class Success extends StatefulWidget {
   const Success({super.key});
@@ -8,6 +9,7 @@ class Success extends StatefulWidget {
 }
 
 class _SuccessState extends State<Success> {
+  get selectedIndex => null;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -79,10 +81,11 @@ class _SuccessState extends State<Success> {
                       borderRadius: BorderRadius.circular(40),
                     ),
                   ),
-                  onPressed: () {
-                    // TODO: Add navigation or action
-                    // Example: context.go('/home');
-                  },
+                  onPressed: selectedIndex != -1
+                      ? () {
+                    context.go('/sp18');
+                  }
+                      : null,
                   child: Text(
                     "Continue",
                     style: TextStyle(

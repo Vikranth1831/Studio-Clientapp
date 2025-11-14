@@ -10,7 +10,7 @@ class Splash18 extends StatefulWidget {
 class _Splash18State extends State<Splash18> {
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
+    double width = MediaQuery.of(context).size.width;   
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
