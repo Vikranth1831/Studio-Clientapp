@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'package:clientapp_studio/pages/VideoPlayer.dart';
+import 'package:clientapp_studio/pages/home_screen.dart';
 import 'package:clientapp_studio/pages/otp.dart';
 import 'package:clientapp_studio/pages/payments.dart';
 import 'package:clientapp_studio/pages/phonelog.dart';
@@ -6,6 +8,7 @@ import 'package:clientapp_studio/pages/plans.dart';
 import 'package:clientapp_studio/pages/splash.dart';
 import 'package:clientapp_studio/pages/splash18.dart';
 import 'package:clientapp_studio/pages/success.dart';
+import 'package:clientapp_studio/pages/video_details_screen.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,9 +42,29 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/',
       pageBuilder: (context, state) {
-        return buildSlideTransitionPage(Splash(), state);
+        return buildSlideTransitionPage(HomeScreen(), state);
       },
-    ), GoRoute(
+    ),
+    GoRoute(
+      path: '/video_details',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(VideoDetailsScreen(), state);
+      },
+    ),
+    GoRoute(
+      path: '/video_player_screen',
+      builder: (context, state) {
+        final String message = state.extra as String;
+        return VideoPlayerMain(videoUrl: message);
+      },
+    ),
+    GoRoute(
+      path: '/home',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(HomeScreen(), state);
+      },
+    ),
+    GoRoute(
       path: '/log',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Login(), state);
