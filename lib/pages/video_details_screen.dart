@@ -8,6 +8,8 @@ import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
+import '../utils/app_responsive.dart';
+
 class VideoDetailsScreen extends StatefulWidget {
   const VideoDetailsScreen({super.key});
 
@@ -47,9 +49,10 @@ class _VideoDetailsScreenState extends State<VideoDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(imagepath);
     final h=SizeConfig.screenHeight;
     final w=SizeConfig.screenWidth;
+    bool isWeb=AppResponsive.isDesktop(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black, // optional
@@ -67,7 +70,7 @@ class _VideoDetailsScreenState extends State<VideoDetailsScreen> {
         children: [
 
           Thumbnail(h, w,videoUrl),
-           NameAndDescription(h,w),
+           NameAndDescription(h,w,isWeb),
 
         ],
       ),
@@ -178,218 +181,302 @@ class _VideoDetailsScreenState extends State<VideoDetailsScreen> {
 
 
 
-  Widget NameAndDescription(double h, double w) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+  Widget NameAndDescription(double h, double w,bool isweb) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
 
-        // -----------------------------------------
-        // TITLE + DURATION + HD TAG
-        // -----------------------------------------
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Shiva & Rani Engagement ',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: w * 0.05, // 20
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+          // -----------------------------------------
+          // TITLE + DURATION + HD TAG
+          // -----------------------------------------
 
-            SizedBox(height: h * 0.009), // 7.25
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  '140 min',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: w * 0.03, // 10.87
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
 
-                SizedBox(width: w * 0.018), // 7.25
-
-                Container(
-                  padding: EdgeInsets.all(w * 0.0048), // 1.81
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        width: w * 0.0024, // 0.91
-                        color: Colors.white.withOpacity(0.20),
+              (isweb) ?
+              Column(
+                children: [
+                  Row(
+                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Shiva & Rani Engagement ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w700,
+                          ),
+                          overflow: TextOverflow.ellipsis, // important for web
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(w * 0.0048), // 1.81
-                    ),
+
+                      SizedBox(width: w * 0.02),
+
+                      Container(
+                        height: (isweb) ? h * 0.07 :  h * 0.06,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: w * 0.037,
+                          vertical: h * 0.009,
+                        ),
+                        decoration: ShapeDecoration(
+                          color: Color(0xFFFEBE01),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(w * 0.085),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width:  (isweb) ? w * 0.03  : w * 0.052,
+                              height:  (isweb) ? h * 0.07  : w * 0.052,
+                              child: SvgPicture.asset(
+                                'assets/icons/play.svg',
+                                color: Colors.black,
+                              ),
+                            ),
+                            SizedBox(width: w * 0.01),
+                            Text(
+                              'Play',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 13,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  child: Text(
-                    'HD',
+
+                  SizedBox(height: h * 0.02), // 16
+
+
+                  // -----------------------------------------
+                  // PLAY BUTTON + DESCRIPTION
+                  // -----------------------------------------
+
+                ],
+              ) :
+              Column(
+                children: [
+                  Text(
+                    'Shiva & Rani Engagement ',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: w * 0.02, // 7.25
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-
-        SizedBox(height: h * 0.02), // 16
-
-
-        // -----------------------------------------
-        // PLAY BUTTON + DESCRIPTION
-        // -----------------------------------------
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // PLAY BUTTON
-            Container(
-              width: double.infinity,
-              height: h * 0.06, // 48
-              padding: EdgeInsets.symmetric(
-                horizontal: w * 0.037, // 14.49
-                vertical: h * 0.009,    // 7.25
-              ),
-              decoration: ShapeDecoration(
-                color: Color(0xFFFEBE01),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(w * 0.085), // 32
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: w * 0.052,  // 20.49
-                    height: w * 0.052, // 20.40
-                    child: SvgPicture.asset(
-                      'assets/icons/play.svg',
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(width: w * 0.01), // 3.62
-                  Text(
-                    'Play',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: w * 0.032, // 12.68
+                      fontSize: 20, // 20
                       fontFamily: 'Inter',
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  SizedBox(height: h * 0.009), // 7.25
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        '140 min',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize :  10.87,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+
+                      SizedBox(width: w * 0.018), // 7.25
+
+                      Container(
+                        padding: EdgeInsets.all(w * 0.0048), // 1.81
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              width: w * 0.0024, // 0.91
+                              color: Colors.white.withOpacity(0.20),
+                            ),
+                            borderRadius: BorderRadius.circular(w * 0.0048), // 1.81
+                          ),
+                        ),
+                        child: Text(
+                          'HD',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize:  7.25,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: h * 0.02), // 16
+
+
+                  // -----------------------------------------
+                  // PLAY BUTTON + DESCRIPTION
+                  // -----------------------------------------
+                  Container(
+                    width: double.infinity,
+                    height: h * 0.06, // 48
+                    padding: EdgeInsets.symmetric(
+                      horizontal: w * 0.037, // 14.49
+                      vertical: h * 0.009,    // 7.25
+                    ),
+                    decoration: ShapeDecoration(
+                      color: Color(0xFFFEBE01),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(w * 0.085), // 32
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: w * 0.052,  // 20.49
+                          height: w * 0.052, // 20.40
+                          child: SvgPicture.asset(
+                            'assets/icons/play.svg',
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(width: w * 0.01), // 3.62
+                        Text(
+                          'Play',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: w * 0.032, // 12.68
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
+              ) ,
+
+
+
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+
+
+                  SizedBox(height: h * 0.015), // 12
+
+                  // ⭐ FULL DESCRIPTION (UNCHANGED)
+                  Text(
+                    'Two hearts united as one, sharing a love that creates endless memories. '
+                        'Today marks the beginning of a beautiful journey of togetherness, filled with joy, '
+                        'laughter, and countless moments to cherish. Celebrating a bond that lasts forever — '
+                        'built on love, trust, and happiness.',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize:  12,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+
+                  SizedBox(height: h * 0.025), // 20
+
+
+                  // -----------------------------------------
+                  // EVENT DATE
+                  // -----------------------------------------
+                  Row(
+                    children: [
+                      SizedBox(
+                        width:24,  // 24
+                        height:24 ,// 24
+                        child: SvgPicture.asset('assets/icons/calendar_icon.svg'),
+                      ),
+                      SizedBox(width : 12), // 12
+
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Event Date',
+                            style: TextStyle(
+                              color: Color(0xFFB4A1A1),
+                              fontSize: 13,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          Text(
+                            'Oct 28,2025',
+                            style: TextStyle(
+                              color: Color(0xFFF1E7E7),
+                              fontSize: 10,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: h * 0.02), // 16
+
+
+                  // -----------------------------------------
+                  // PLACE
+                  // -----------------------------------------
+                  Row(
+                    children: [
+                      SizedBox(
+                        width:24,  // 24
+                        height:24 ,//
+                        child: SvgPicture.asset('assets/icons/location_icon.svg'),
+                      ),
+                      SizedBox(width: 12),
+
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Place',
+                            style: TextStyle(
+                              color: Color(0xFFB4A1A1),
+                              fontSize: 13,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          Text(
+                            'Hyderabad',
+                            style: TextStyle(
+                              color: Color(0xFFF1E7E7),
+                              fontSize: 10,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ),
-
-            SizedBox(height: h * 0.015), // 12
-
-            // ⭐ FULL DESCRIPTION (UNCHANGED)
-            Text(
-              'Two hearts united as one, sharing a love that creates endless memories. '
-                  'Today marks the beginning of a beautiful journey of togetherness, filled with joy, '
-                  'laughter, and countless moments to cherish. Celebrating a bond that lasts forever — '
-                  'built on love, trust, and happiness.',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: w * 0.03, // 12
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-
-            SizedBox(height: h * 0.025), // 20
+            ],
+          ),
 
 
-            // -----------------------------------------
-            // EVENT DATE
-            // -----------------------------------------
-            Row(
-              children: [
-                SizedBox(
-                  width: w * 0.06,  // 24
-                  height: w * 0.06, // 24
-                  child: SvgPicture.asset('assets/icons/calendar_icon.svg'),
-                ),
-                SizedBox(width: w * 0.03), // 12
-
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Event Date',
-                      style: TextStyle(
-                        color: Color(0xFFB4A1A1),
-                        fontSize: w * 0.03,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Text(
-                      'Oct 28,2025',
-                      style: TextStyle(
-                        color: Color(0xFFF1E7E7),
-                        fontSize: w * 0.035,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-
-            SizedBox(height: h * 0.02), // 16
-
-
-            // -----------------------------------------
-            // PLACE
-            // -----------------------------------------
-            Row(
-              children: [
-                SizedBox(
-                  width: w * 0.06,
-                  height: w * 0.06,
-                  child: SvgPicture.asset('assets/icons/location_icon.svg'),
-                ),
-                SizedBox(width: w * 0.03),
-
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Place',
-                      style: TextStyle(
-                        color: Color(0xFFB4A1A1),
-                        fontSize: w * 0.03,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Text(
-                      'Hyderabad',
-                      style: TextStyle(
-                        color: Color(0xFFF1E7E7),
-                        fontSize: w * 0.035,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -83,7 +83,7 @@ class _SuccessState extends State<Success> {
                   ),
                   onPressed: selectedIndex != -1
                       ? () {
-                    context.go('/sp18');
+                    context.go('/dashboard');
                   }
                       : null,
                   child: Text(

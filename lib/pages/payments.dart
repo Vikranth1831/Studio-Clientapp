@@ -30,7 +30,7 @@ class _PaymentsState extends State<Payments> {
       backgroundColor: Colors.black,
       appBar: CustomAppBar1(
         title: 'Payment',
-        actions: const [],
+        actions: const [], issetting: false,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: width * 0.05),

@@ -31,7 +31,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: CustomAppBar1(title: 'Notifications', actions: const []),
+      appBar: CustomAppBar1(title: 'Notifications', actions: const [], issetting: false,),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

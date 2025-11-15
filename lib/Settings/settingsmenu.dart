@@ -1,4 +1,5 @@
 import 'package:clientapp_studio/Components/CutomAppBar.dart';
+import 'package:clientapp_studio/utils/app_responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -49,10 +50,11 @@ class _SetMenuState extends State<SetMenu> {
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
+    bool isWeb=AppResponsive.isDesktop(context);
 
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: CustomAppBar1(title: 'Settings', actions: []),
+      appBar: CustomAppBar1(title: 'Settings', actions: [], issetting: true,),
 
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: w * 0.05, vertical: h * 0.015),
@@ -63,7 +65,8 @@ class _SetMenuState extends State<SetMenu> {
               child: InkWell(
                 onTap: menuItems[index]["onTap"],
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: w * 0.04, vertical: h * 0.018),
+                  padding: EdgeInsets.symmetric(horizontal: w * 0.04,
+                      vertical: (isWeb) ? h * 0.0 :  h * 0.018),
                   decoration: BoxDecoration(
                     color: Colors.grey[900],
                     borderRadius: BorderRadius.circular(15),
@@ -83,7 +86,7 @@ class _SetMenuState extends State<SetMenu> {
                           menuItems[index]["title"],
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: w * 0.045,
+                            fontSize: 13,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -95,7 +98,7 @@ class _SetMenuState extends State<SetMenu> {
                           menuItems[index]["sub"],
                           style: TextStyle(
                             color: Colors.white54,
-                            fontSize: w * 0.033,
+                            fontSize: 11 ,
                           ),
                           textAlign: TextAlign.end,
                         ),

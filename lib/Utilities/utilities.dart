@@ -1,3 +1,4 @@
+import 'package:clientapp_studio/utils/app_responsive.dart';
 import 'package:clientapp_studio/utils/media_query_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -14,121 +15,243 @@ class _UtilHomeState extends State<UtilHome> {
   Widget build(BuildContext context) {
     final double h = SizeConfig.screenHeight;
     final double w = SizeConfig.screenWidth;
+    bool isWeb = AppResponsive.isDesktop(context);
+
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(0.0),
       child: Scaffold(
         backgroundColor: Colors.black,
-        appBar: CustomAppBar(h: h, w: w),
+        appBar: CustomAppBar(h, w, isWeb),
 
-        body: Column(
-          children: [
-            /// TOP IMAGE
-            Container(
-              child: Image.asset('assets/images/Dataimage.png'),
-              height: h * 0.4,
-              width: w * 1,
+        body: isWeb
+            ? Padding(
+              padding:  EdgeInsets.all(isWeb ? 12 : 0),
+              child: Center(
+                child:
+                Column(
+                  children: [
+                   SizedBox(height: h * 0.1,),
+                    Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                    Expanded(
+                      flex: 1,
+                      child: ShowImage('assets/images/Dataimage.png', h, w,isWeb),
+                    ),
+                    SizedBox(width: w * 0.03),
+                    Expanded(
+                      flex: 1,
+                      child: GridContainer(h, w,isWeb),
+                    ),
+                              ],
+                            ),
+                  ],
+                ),
+              ),
+            )
+            : SingleChildScrollView(
+              child: Column(
+                        children: [
+              ShowImage('assets/images/Dataimage.png', h, w,isWeb),
+              SizedBox(height: h * 0.015),
+              GridContainer(h, w,isWeb),
+                          SizedBox(height: h * 0.02),
+                        ],
+                      ),
             ),
 
-            SizedBox(height: h * 0.03),
+      ),
+    );
+  }
+  Widget GridContainer(var h, var w, bool isweb) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
 
-            /// GRID CONTAINER
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Column(
+          /// COLUMN → MOBILE
+          /// FLEXIBLE COLUMN → WEB (prevents overflow)
+          child: isweb
+              ? Padding(
+                padding: const EdgeInsets.all(0),
+                child: Flexible(
+                            child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+
+                  // ROW 1
+                  Row(
                     children: [
-                      /// ROW 1
-                      Row(
-                        children: [
-                          vaultButton(
-                            title: "ID Vault",
-                            icon: "assets/icons/Lock.png",
-                            bgColor: const Color(0xFFFEBE01),
-                            onTap: () {
-                              context.push('/id-vault');
-                            },
-                            w: w,
-                            h: h,
-                          ),
-                          vaultButton(
-                            title: "Iron Vault",
-                            icon: "assets/icons/Shield.png",
-                            bgColor: const Color(0xFFFFF9E6),
-                            onTap: () {
-                              context.push('/iron-vault');
-                            },
-                            w: w,
-                            h: h,
-                          ),
-                        ],
+                      vaultButton(
+                        title: "ID Vault",
+                        icon: "assets/icons/Lock.png",
+                        bgColor: const Color(0xFFFEBE01),
+                        onTap: () => context.push('/id-vault'),
+                        w: w,
+                        h: h,
+                        isweb: isweb,
                       ),
-
-                      /// ROW 2
-                      Row(
-                        children: [
-                          vaultButton(
-                            title: "General Vault",
-                            icon: "assets/icons/Folder.png",
-                            bgColor: const Color(0xFFFFF9E6),
-                            onTap: () {
-                              context.push('/general-vault');
-                            },
-                            w: w,
-                            h: h,
-                          ),
-                          vaultButton(
-                            title: "Legacy Vault",
-                            icon: "assets/icons/Vector.png",
-                            bgColor: const Color(0xFFFEBE01),
-                            onTap: () {
-                              context.push('/legacy-vault');
-                            },
-                            w: w,
-                            h: h,
-                          ),
-                        ],
-                      ),
-
-                      /// ROW 3
-                      Row(
-                        children: [
-                          vaultButton(
-                            title: "E-books",
-                            icon: "assets/icons/Books.png",
-                            bgColor: const Color(0xFFFEBE01),
-                            onTap: () {
-                              context.push('/ebooks');
-                            },
-                            w: w,
-                            h: h,
-                          ),
-                          vaultButton(
-                            title: "Download",
-                            icon: "assets/icons/DownloadSimple.png",
-                            bgColor: const Color(0xFFFFF9E6),
-                            onTap: () {
-                              context.push('/download-history');
-                            },
-                            w: w,
-                            h: h,
-                          ),
-                        ],
+                      vaultButton(
+                        title: "Iron Vault",
+                        icon: "assets/icons/Shield.png",
+                        bgColor: const Color(0xFFFFF9E6),
+                        onTap: () => context.push('/iron-vault'),
+                        w: w,
+                        h: h,
+                        isweb: isweb,
                       ),
                     ],
                   ),
+
+                  // ROW 2
+                  Row(
+                    children: [
+                      vaultButton(
+                        title: "General Vault",
+                        icon: "assets/icons/Folder.png",
+                        bgColor: const Color(0xFFFFF9E6),
+                        onTap: () => context.push('/general-vault'),
+                        w: w,
+                        h: h,
+                        isweb: isweb,
+                      ),
+                      vaultButton(
+                        title: "Legacy Vault",
+                        icon: "assets/icons/Vector.png",
+                        bgColor: const Color(0xFFFEBE01),
+                        onTap: () => context.push('/legacy-vault'),
+                        w: w,
+                        h: h,
+                        isweb: isweb,
+                      ),
+                    ],
+                  ),
+
+                  // ROW 3
+                  Row(
+                    children: [
+                      vaultButton(
+                        title: "E-books",
+                        icon: "assets/icons/Books.png",
+                        bgColor: const Color(0xFFFEBE01),
+                        onTap: () => context.push('/ebooks'),
+                        w: w,
+                        h: h,
+                        isweb: isweb,
+                      ),
+                      vaultButton(
+                        title: "Download",
+                        icon: "assets/icons/DownloadSimple.png",
+                        bgColor: const Color(0xFFFFF9E6),
+                        onTap: () => context.push('/download-history'),
+                        w: w,
+                        h: h,
+                        isweb: isweb,
+                      ),
+                    ],
+                  ),
+                ],
+                            ),
+                          ),
+              )
+
+          /// MOBILE LAYOUT (NO CHANGE)
+              : SingleChildScrollView(
+                child: Column(
+                            children: [
+                // ROW 1
+                Row(
+                  children: [
+                    vaultButton(
+                      title: "ID Vault",
+                      icon: "assets/icons/Lock.png",
+                      bgColor: const Color(0xFFFEBE01),
+                      onTap: () => context.push('/id-vault'),
+                      w: w,
+                      h: h,
+                      isweb: isweb,
+                    ),
+                    vaultButton(
+                      title: "Iron Vault",
+                      icon: "assets/icons/Shield.png",
+                      bgColor: const Color(0xFFFFF9E6),
+                      onTap: () => context.push('/iron-vault'),
+                      w: w,
+                      h: h,
+                      isweb: isweb,
+                    ),
+                  ],
                 ),
+
+                // ROW 2
+                Row(
+                  children: [
+                    vaultButton(
+                      title: "General Vault",
+                      icon: "assets/icons/Folder.png",
+                      bgColor: const Color(0xFFFFF9E6),
+                      onTap: () => context.push('/general-vault'),
+                      w: w,
+                      h: h,
+                      isweb: isweb,
+                    ),
+                    vaultButton(
+                      title: "Legacy Vault",
+                      icon: "assets/icons/Vector.png",
+                      bgColor: const Color(0xFFFEBE01),
+                      onTap: () => context.push('/legacy-vault'),
+                      w: w,
+                      h: h,
+                      isweb: isweb,
+                    ),
+                  ],
+                ),
+
+                // ROW 3
+                Row(
+                  children: [
+                    vaultButton(
+                      title: "E-books",
+                      icon: "assets/icons/Books.png",
+                      bgColor: const Color(0xFFFEBE01),
+                      onTap: () => context.push('/ebooks'),
+                      w: w,
+                      h: h,
+                      isweb: isweb,
+                    ),
+                    vaultButton(
+                      title: "Download",
+                      icon: "assets/icons/DownloadSimple.png",
+                      bgColor: const Color(0xFFFFF9E6),
+                      onTap: () => context.push('/download-history'),
+                      w: w,
+                      h: h,
+                      isweb: isweb,
+                    ),
+                  ],
+                ),
+                            ],
+                          ),
               ),
-            ),
-          ],
         ),
       ),
+    );
+  }
+
+
+  Widget ShowImage(String path,var h,var w,bool isweb)
+  {
+    return  Container(
+      child: Image.asset('assets/images/Dataimage.png'),
+      height:  (isweb) ? h * 0.6 :  h * 0.4,
+      width: (isweb) ? w * 0.3 :  w * 0.5,
     );
   }
 }
@@ -144,32 +267,36 @@ Widget vaultButton({
   required Function() onTap,
   required double w,
   required double h,
+  required bool isweb,
 }) {
+  // RESPONSIVE SIZES
+  double boxHeight = isweb ? 120 : h * 0.12;
+  double iconSize = isweb ? 40 : w * 0.085;
+  double fontSize = isweb ? 16 : w * 0.04;
+
   return Expanded(
     child: InkWell(
       onTap: onTap,
       child: Container(
-        height: h * 0.12,
+        height: boxHeight,
         color: bgColor,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            /// PNG ICON WITHOUT COLOR FILTER
             Image.asset(
               icon,
-              width: w * 0.085,
-              height: w * 0.085,
+              width: iconSize,
+              height: iconSize,
               fit: BoxFit.contain,
             ),
 
             SizedBox(height: 6),
 
-            /// TEXT
             Text(
               title,
               style: TextStyle(
                 color: Colors.black87,
-                fontSize: w * 0.04,
+                fontSize: fontSize,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -180,84 +307,46 @@ Widget vaultButton({
   );
 }
 
-/// ---------------------------------------------------------------------
-/// CUSTOM APP BAR (PNG ICON ADDED INSTEAD OF SVG)
-/// ---------------------------------------------------------------------
-
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final double h;
-  final double w;
-
-  const CustomAppBar({super.key, required this.h, required this.w});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
+ 
+PreferredSizeWidget CustomAppBar(double h, double w, bool isWeb) {
+  return PreferredSize(
+    preferredSize: Size.fromHeight(h * 0.13),
+    child: Container(
       width: w,
-      padding: EdgeInsets.symmetric(horizontal: w * 0.04, vertical: h * 0.018),
-      height: preferredSize.height,
-      decoration: const BoxDecoration(
-        color: Colors.black,
+      padding: EdgeInsets.symmetric(
+        horizontal: w * 0.04,
+        vertical: h * 0.018,
       ),
+      decoration: const BoxDecoration(color: Colors.black),
       child: Row(
         children: [
-          /// LEFT SIDE TITLE
+          /// LEFT TEXTS
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Studio App',
+                'Utility',
                 style: TextStyle(
-                  color: const Color(0xFFFEBE01),
-                  fontSize: w * 0.065,
+                  color:  Colors.white,
+                  fontSize: (isWeb) ? w * 0.02 : w * 0.07,
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                'Dphotowala Studio',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: w * 0.034,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+
+
             ],
           ),
 
-          const Spacer(),
-
-          /// NOTIFICATION BUTTON (PNG)
-          // Container(
-          //   width: w * 0.09,
-          //   height: w * 0.09,
-          //   decoration: ShapeDecoration(
-          //     shape: RoundedRectangleBorder(
-          //       side: const BorderSide(
-          //         width: 1,
-          //         color: Color(0xFF372901),
-          //       ),
-          //       borderRadius: BorderRadius.circular(50),
-          //     ),
-          //   ),
-          //   child: Center(
-          //     child: SizedBox(
-          //       width: w * 0.06,
-          //       height: w * 0.06,
-          //       child: Image.asset(
-          //         '',
-          //         fit: BoxFit.contain,
-          //       ),
-          //     ),
-          //   ),
-          // ),
         ],
       ),
-    );
-  }
-
-  @override
-  Size get preferredSize => Size.fromHeight(h * 0.11);
+    ),
+  );
 }
+
+/// ---------------------------------------------------------------------
+/// CUSTOM APP BAR (PNG ICON ADDED INSTEAD OF SVG)
+/// ---------------------------------------------------------------------
+
+

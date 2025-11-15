@@ -129,7 +129,8 @@ class OtpScreen extends StatelessWidget {
           /// Back Icon
           InkWell(
             onTap: () {
-              context.pop('/log'); // ✅ Corrected from context.pop;
+              print("ghh");
+              context.pop(); // ✅ Corrected from context.pop;
             },
             child: Container(
               width: h * 0.05,

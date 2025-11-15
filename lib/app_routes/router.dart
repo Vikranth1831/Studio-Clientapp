@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:clientapp_studio/pages/VideoPlayer.dart';
+import 'package:clientapp_studio/pages/dashboard.dart';
 import 'package:clientapp_studio/pages/home_screen.dart';
 import 'package:clientapp_studio/Settings/dhistory.dart';
 import 'package:clientapp_studio/Settings/right.dart';
@@ -48,7 +49,13 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/',
       pageBuilder: (context, state) {
-        return buildSlideTransitionPage(HomeScreen(), state);
+        return buildSlideTransitionPage(Splash(), state);
+      },
+    ),
+    GoRoute(
+      path: '/dashboard',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Dashboard(), state);
       },
     ),
     GoRoute(

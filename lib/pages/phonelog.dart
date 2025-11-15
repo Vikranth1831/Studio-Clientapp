@@ -127,7 +127,7 @@ class _LoginState extends State<Login> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      context.go('/otp');
+                      context.push('/otp');
                     }
                   },
                   child: Text(
