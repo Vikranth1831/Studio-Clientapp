@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:clientapp_studio/Components/CutomAppBar.dart';
+import 'package:go_router/go_router.dart';
 
 class Payments extends StatefulWidget {
   const Payments({super.key});
@@ -123,9 +124,11 @@ class _PaymentsState extends State<Payments> {
                       borderRadius: BorderRadius.circular(40),
                     ),
                   ),
-                  onPressed: () {
-                    // Navigate or integrate later with API
-                  },
+                  onPressed: selectedIndex != -1
+                      ? () {
+                    context.go('/success');
+                  }
+                      : null,
                   child: Text(
                     "Continue",
                     style: TextStyle(

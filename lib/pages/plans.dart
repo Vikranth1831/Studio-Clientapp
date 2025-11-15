@@ -192,7 +192,7 @@ class _PlansState extends State<Plans> {
                     ),
                     onPressed: selectedIndex != -1
                         ? () {
-                        context.go('/payment');
+                        context.go('/payments');
                               }
                         : null,
                     child: Text(

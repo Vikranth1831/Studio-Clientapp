@@ -1,6 +1,12 @@
 import 'dart:ui';
 import 'package:clientapp_studio/pages/VideoPlayer.dart';
 import 'package:clientapp_studio/pages/home_screen.dart';
+import 'package:clientapp_studio/Settings/dhistory.dart';
+import 'package:clientapp_studio/Settings/right.dart';
+import 'package:clientapp_studio/Settings/settingsmenu.dart';
+import 'package:clientapp_studio/Utilities/Iron%20Vault/ivstart.dart';
+import 'package:clientapp_studio/Utilities/utilities.dart';
+import 'package:clientapp_studio/pages/notification.dart';
 import 'package:clientapp_studio/pages/otp.dart';
 import 'package:clientapp_studio/pages/payments.dart';
 import 'package:clientapp_studio/pages/phonelog.dart';
@@ -62,9 +68,39 @@ final GoRouter appRouter = GoRouter(
       path: '/home',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(HomeScreen(), state);
+        return buildSlideTransitionPage(UtilHome(), state);
       },
-    ),
-    GoRoute(
+    ), GoRoute(
+      path: '/iron-vault',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(IronVault1(), state);
+      },
+    ),GoRoute(
+      path: '/utils',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(UtilHome(), state);
+      },
+    ), GoRoute(
+      path: '/notification',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(NotificationScreen(), state);
+      },
+    ),GoRoute(
+      path: '/downhistory',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(DownLoadHistory(), state);
+      },
+    ),GoRoute(
+      path: '/dsuccess',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(DeleteSuccess(), state);
+      },
+    ),GoRoute(
+      path: '/settings',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(SetMenu(), state);
+      },
+    ), GoRoute(
       path: '/log',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Login(), state);
