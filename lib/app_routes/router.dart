@@ -1,4 +1,11 @@
 import 'dart:ui';
+import 'package:clientapp_studio/Utilities/Iron%20Vault/UploadPage.dart';
+import 'package:clientapp_studio/Utilities/Iron%20Vault/addnewfile.dart';
+import 'package:clientapp_studio/Utilities/Iron%20Vault/documents.dart';
+import 'package:clientapp_studio/Utilities/Iron%20Vault/vaultImage.dart';
+import 'package:clientapp_studio/Utilities/Iron%20Vault/vaultotp.dart';
+import 'package:clientapp_studio/Utilities/Iron%20Vault/vaultpin.dart';
+import 'package:clientapp_studio/Utilities/Iron%20Vault/viewdocument.dart';
 import 'package:clientapp_studio/pages/VideoPlayer.dart';
 import 'package:clientapp_studio/pages/dashboard.dart';
 import 'package:clientapp_studio/pages/home_screen.dart';
@@ -48,7 +55,57 @@ final GoRouter appRouter = GoRouter(
   // overridePlatformDefaultLocation: false,
   routes: [
     GoRoute(
+      path: '/uploadPage',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(UploadPage(fileType: '',), state);
+      },
+    ),    GoRoute(
       path: '/',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(AddNewDocument(), state);
+      },
+    ),GoRoute(
+      path: '/vaultDocuments',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(VaultDocs(), state);
+      },
+    ),GoRoute(
+      path: '/viewImage',
+      pageBuilder: (context, state) {
+        final data = state.extra as Map<String, String?>?;
+
+        return MaterialPage(
+          key: state.pageKey,
+          child: ViewImagePage(
+            img: {
+              "name": data?["name"] ?? "",
+              "path": data?["path"] ?? "",
+            },
+          ),
+        );
+      },
+    ),GoRoute(
+      path: '/viewDocument',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(ViewDocumentPage(doc: {},), state);
+      },
+    ), GoRoute(
+      path: '/Documents',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(VaultDocs(), state);
+      },
+    ), GoRoute(
+      path: '/vaultotp',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Vaultotp(), state);
+      },
+    ), GoRoute(
+      path: '/vaultpin',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Vaultpin(), state);
+      },
+    ),GoRoute(
+      path: '/sp',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Splash(), state);
       },

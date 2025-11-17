@@ -36,6 +36,7 @@ class _PaymentsState extends State<Payments> {
         title: 'Payment',
         actions: const [],
         issetting: false,
+        actions: const [], issetting: false,isdocuments: false,
       ),
       body: isWeb ? _buildWebLayout(context, w, h) : _buildMobileLayout(context, w, h),
     );
