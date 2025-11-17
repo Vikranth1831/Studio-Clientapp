@@ -33,7 +33,7 @@ class _DownLoadHistoryState extends State<DownLoadHistory> {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: CustomAppBar1(title: 'Download History', actions: [], issetting: false,),
+      appBar: CustomAppBar1(title: 'Download History', actions: [], issetting: false,isdocuments: false,),
 
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: w * 0.05, vertical: h * 0.015),

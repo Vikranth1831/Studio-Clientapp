@@ -54,7 +54,7 @@ class _SetMenuState extends State<SetMenu> {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: CustomAppBar1(title: 'Settings', actions: [], issetting: true,),
+      appBar: CustomAppBar1(title: 'Settings', actions: [], issetting: true,isdocuments: false,),
 
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: w * 0.05, vertical: h * 0.015),
