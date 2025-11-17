@@ -205,9 +205,9 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
 
     // Responsive values only for web
     final topSpacing = isWeb ? h * 0.18 : h * 0.33;
-    final titleFont = isWeb ? w * 0.035 : w * 0.10;
-    final subTitleFont = isWeb ? w * 0.045 : w * 0.12;
-    final buttonHeight = isWeb ? h * 0.075 : h * 0.065;
+    final titleFont = isWeb ? w * 0.025 : w * 0.10;
+    final subTitleFont = isWeb ? w * 0.035 : w * 0.12;
+    final buttonHeight = isWeb ? h * 0.095 : h * 0.065;
     final bottomSpacing = isWeb ? h * 0.03 : h * 0.07;
 
     return FadeTransition(

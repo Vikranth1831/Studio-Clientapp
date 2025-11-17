@@ -25,7 +25,12 @@ class CustomAppBar1 extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () {
             context.pop(true);
           },
-          icon: const Icon(Icons.arrow_back, size: 24, color: Colors.white),
+          icon: InkWell(
+              onTap: ()
+              {
+                context.pop();
+              },
+              child: const Icon(Icons.arrow_back, size: 24, color: Colors.white)),
         )
             : null,
         title: Text(

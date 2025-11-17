@@ -12,6 +12,7 @@ import 'package:clientapp_studio/pages/otp.dart';
 import 'package:clientapp_studio/pages/payments.dart';
 import 'package:clientapp_studio/pages/phonelog.dart';
 import 'package:clientapp_studio/pages/plans.dart';
+import 'package:clientapp_studio/pages/podcast_details.dart';
 import 'package:clientapp_studio/pages/splash.dart';
 import 'package:clientapp_studio/pages/splash18.dart';
 import 'package:clientapp_studio/pages/success.dart';
@@ -132,7 +133,13 @@ final GoRouter appRouter = GoRouter(
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Success(), state);
       },
-    ), GoRoute(
+    ),
+    GoRoute(
+      path: '/podcast_details',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(PodcastDetails(), state);
+      },
+    ),GoRoute(
       path: '/payments',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Payments(), state);

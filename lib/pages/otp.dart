@@ -1,7 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:clientapp_studio/utils/color_constants.dart';
 import 'package:clientapp_studio/utils/media_query_helper.dart';
+
+import '../utils/app_responsive.dart';
 
 class OtpScreen extends StatelessWidget {
   OtpScreen({super.key});
@@ -18,44 +22,159 @@ class OtpScreen extends StatelessWidget {
     double h = SizeConfig.screenHeight;
     double w = SizeConfig.screenWidth;
 
+    bool isWeb = AppResponsive.isDesktop(context);
+
     return Scaffold(
       backgroundColor: Colors.black,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: w * 0.05),
-              child: Column(
-                children: [
-                  SizedBox(height: h * 0.15),
+      body: isWeb ? buildWebLayout(context, h, w,isWeb) : buildMobileLayout(context, h, w,isWeb),
+    );
+  }
 
-                  /// ✅ OTP Image
-                  Image.asset(
-                    "assets/images/Layer1.png",
-                    width: w * 0.55,
+  // ------------------ MOBILE (UNCHANGED) ------------------
+  Widget buildMobileLayout(BuildContext context, double h, double w,bool isweb) {
+    return SingleChildScrollView(
+      child: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: w * 0.05),
+            child: Column(
+              children: [
+                SizedBox(height: h * 0.15),
+
+                Image.asset("assets/images/Layer1.png", width: w * 0.55),
+
+                SizedBox(height: h * 0.05),
+
+                otpSection(context, h, w,isweb),
+
+                SizedBox(height: h * 0.1),
+
+                GestureDetector(
+                  onTap: () {
+                    String otp = getOtp();
+                    context.push('/plans', extra: "Account Created Successfully");
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: h * 0.06,
+                    decoration: ShapeDecoration(
+                      color: Color(0xFFFEBE01),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(h * 0.03),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Submit OTP",
+                        style: TextStyle(
+                          color: Color(0xFF333333),
+                          fontSize: h * 0.02,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
                   ),
+                ),
+
+                SizedBox(height: h * 0.03),
+
+                GestureDetector(
+                  onTap: () => context.push('/signin'),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Already have an account? ",
+                          style: TextStyle(color: Colors.white70, fontSize: h * 0.018)),
+                      Text(
+                        "Sign In",
+                        style: TextStyle(
+                          color: Color(0xFFFEBE01),
+                          fontSize: h * 0.018,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                          decorationColor: Color(0xFFFEBE01),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: h * 0.05),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ------------------ WEB LAYOUT ------------------
+  Widget buildWebLayout(BuildContext context, double h, double w,bool isweb) {
+    return Stack(
+      children: [
+        /// BLURRED BACKGROUND IMAGE
+        Positioned.fill(
+          child: Stack(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage( "assets/images/splash_image.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4), // STRONG BLUR
+                child: Container(
+                  color: Colors.black.withOpacity(0.25), // slight dark layer
+                ),
+              ),
+            ],
+          ),
+        ),
+
+
+        /// BOTTOM BLACKISH OVERLAY
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            width: w,
+            height: h,
+            color: Colors.black.withOpacity(0.55),
+          ),
+        ),
+
+        /// CENTER CARD
+        Center(
+          child: Card(
+            elevation: 16,
+            color: Colors.black.withOpacity(0.75),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+            child: Container(
+              width: w * 0.32,
+              padding: EdgeInsets.symmetric(vertical: h * 0.03, horizontal: w * 0.02),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset("assets/images/Layer1.png", width: w * 0.18),
+
+                  SizedBox(height: h * 0.03),
+
+                  otpSection(context, h, w * 0.55,isweb), // reduce width inside card
 
                   SizedBox(height: h * 0.05),
 
-                  otpSection(context, h, w),
-
-                  SizedBox(height: h * 0.1),
-
-                  /// ✅ Submit OTP Button
                   GestureDetector(
                     onTap: () {
                       String otp = getOtp();
-                      print("✅ OTP Entered: $otp");
-                      context.push(
-                        '/plans',
-                        extra: "Account Created Successfully",
-                      );
+                      context.push('/plans', extra: "Account Created Successfully");
                     },
                     child: Container(
                       width: double.infinity,
                       height: h * 0.06,
                       decoration: ShapeDecoration(
-                        color: const Color(0xFFFEBE01),
+                        color: Color(0xFFFEBE01),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(h * 0.03),
                         ),
@@ -64,9 +183,8 @@ class OtpScreen extends StatelessWidget {
                         child: Text(
                           "Submit OTP",
                           style: TextStyle(
-                            color: const Color(0xFF333333),
+                            color: Color(0xFF333333),
                             fontSize: h * 0.02,
-                            fontFamily: 'Inter',
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -76,119 +194,86 @@ class OtpScreen extends StatelessWidget {
 
                   SizedBox(height: h * 0.03),
 
-                  /// ✅ Already have an account? Sign In
                   GestureDetector(
-                    onTap: () {
-                      context.push('/signin'); // 👈 navigate to sign-in screen
-                    },
-
-
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Already have an account? ",
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: h * 0.018,
-                            ),
+                    onTap: () => context.push('/signin'),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Already have an account? ",
+                            style: TextStyle(color: Colors.white70, fontSize: h * 0.018)),
+                        Text(
+                          "Sign In",
+                          style: TextStyle(
+                            color: Color(0xFFFEBE01),
+                            fontSize: h * 0.018,
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                            decorationColor: Color(0xFFFEBE01),
                           ),
-                          Text(
-                            "Sign In",
-                            style: TextStyle(
-                              color: const Color(0xFFFEBE01),
-                              fontSize: h * 0.018,
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline,
-                              decorationColor: Color(0xFFFEBE01),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                  ),
 
-
-                  SizedBox(height: h * 0.05),
+                  SizedBox(height: h * 0.03),
                 ],
               ),
             ),
           ),
-        ),
-      ),
+        )
+      ],
     );
   }
 
-  /// ✅ OTP SECTION
-  Widget otpSection(BuildContext context, double h, double w) {
+  // ------------------ OTP SECTION (same for both) ------------------
+  Widget otpSection(BuildContext context, double h, double w,bool isweb) {
     return SizedBox(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// Back Icon
           InkWell(
-            onTap: () {
-              print("ghh");
-              context.pop(); // ✅ Corrected from context.pop;
-            },
+            onTap: () => context.pop(),
             child: Container(
               width: h * 0.05,
               height: h * 0.05,
               decoration: BoxDecoration(
-                border: Border.all(
-                  width: 1,
-                  color: const Color(0xFF848484),
-                ),
+                border: Border.all(width: 1, color: Color(0xFF848484)),
                 borderRadius: BorderRadius.circular(h * 0.04),
               ),
-              child: const Center(
-                child: Icon(
-                  Icons.chevron_left,
-                  color: Color(0xFFFEBE01),
-                ),
+              child: Center(
+                child: Icon(Icons.chevron_left, color: Color(0xFFFEBE01)),
               ),
             ),
           ),
 
           SizedBox(height: h * 0.025),
 
-          /// ✅ Enter OTP text
-          Text(
-            'Enter OTP',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: h * 0.025,
-              fontWeight: FontWeight.w600,
-              height: 1.20,
-            ),
-          ),
+          Text("Enter OTP",
+              style: TextStyle(color: Colors.white, fontSize: h * 0.025, fontWeight: FontWeight.w600)),
 
           SizedBox(height: h * 0.015),
 
-          /// ✅ OTP Info
           Text(
-            'OTP sent to the +91 81xxxxxx00',
-            style: TextStyle(
-              color: const Color(0xFFD2D2D2),
-              fontSize: h * 0.020,
-              fontWeight: FontWeight.w400,
-              height: 1.50,
-            ),
+            "OTP sent to +91 81xxxxxx00",
+            style: TextStyle(color: Color(0xFFD2D2D2), fontSize: h * 0.020),
           ),
 
           SizedBox(height: h * 0.025),
 
-          /// ✅ OTP Input Fields
+          /// OTP BOXES
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(6, (index) {
               return SizedBox(
-                width: w * 0.12,
+                width:(isweb) ? w* 0.07 :  w * 0.12,
                 height: h * 0.065,
                 child: TextField(
-                  cursorColor: Colors.white,
                   controller: _otpControllers[index],
+                  maxLength: 1,
+                  cursorColor: Colors.white,
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
                   onChanged: (value) {
                     if (value.isNotEmpty && index < 5) {
                       FocusScope.of(context).nextFocus();
@@ -196,31 +281,18 @@ class OtpScreen extends StatelessWidget {
                       FocusScope.of(context).previousFocus();
                     }
                   },
-                  textAlign: TextAlign.center,
-                  keyboardType: TextInputType.number,
-                  maxLength: 1,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: h * 0.018,
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: h * 0.018),
                   decoration: InputDecoration(
                     counterText: "",
                     filled: true,
                     fillColor: Colors.white24,
-                    contentPadding: EdgeInsets.zero,
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(h * 0.01),
-                      borderSide: const BorderSide(
-                        color: Colors.white70,
-                        width: 1,
-                      ),
+                      borderSide: BorderSide(color: Colors.white70),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(h * 0.01),
-                      borderSide: const BorderSide(
-                        color: Colors.white,
-                        width: 1.5,
-                      ),
+                      borderSide: BorderSide(color: Colors.white, width: 1.5),
                     ),
                   ),
                 ),
@@ -230,19 +302,17 @@ class OtpScreen extends StatelessWidget {
 
           SizedBox(height: h * 0.02),
 
-          /// ✅ Resend OTP
           Row(
             children: [
-              const Spacer(),
+              Spacer(),
               Text(
-                'Resend OTP',
+                "Resend OTP",
                 style: TextStyle(
-                  color: const Color(0xFFFEBE01),
+                  color: Color(0xFFFEBE01),
                   fontSize: h * 0.02,
                   fontWeight: FontWeight.w600,
                   decoration: TextDecoration.underline,
-                  decorationColor: const Color(0xFFFEBE01),
-                  height: 1.50,
+                  decorationColor: Color(0xFFFEBE01),
                 ),
               ),
             ],
@@ -252,3 +322,4 @@ class OtpScreen extends StatelessWidget {
     );
   }
 }
+

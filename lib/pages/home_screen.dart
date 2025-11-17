@@ -487,6 +487,7 @@ class _HomeScreenState extends State<HomeScreen> {
           horizontal: w * 0.04,
           vertical: h * 0.018,
         ),
+
         decoration: const BoxDecoration(color: Colors.black),
         child: Row(
           children: [
