@@ -1,11 +1,18 @@
 import 'dart:ui';
+import 'package:clientapp_studio/Utilities/E-books/bookPaymentSuccess.dart';
+import 'package:clientapp_studio/Utilities/E-books/descriptionPage.dart';
+import 'package:clientapp_studio/Utilities/E-books/ebooksHome.dart';
+import 'package:clientapp_studio/Utilities/E-books/viewBook.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/UploadPage.dart';
+import 'package:clientapp_studio/Utilities/Iron%20Vault/VerifiedPage.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/addnewfile.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/documents.dart';
+import 'package:clientapp_studio/Utilities/Iron%20Vault/uploadSuccessful.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/vaultImage.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/vaultotp.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/vaultpin.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/viewdocument.dart';
+import 'package:clientapp_studio/Utilities/Legacy%20Wallet/legacyHome.dart';
 import 'package:clientapp_studio/pages/VideoPlayer.dart';
 import 'package:clientapp_studio/pages/dashboard.dart';
 import 'package:clientapp_studio/pages/home_screen.dart';
@@ -55,21 +62,82 @@ final GoRouter appRouter = GoRouter(
   // overridePlatformDefaultLocation: false,
   routes: [
     GoRoute(
+      path: "/",
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(LegacyWalletHome(), state);
+      },
+    ), GoRoute(
+      path: "/viewBook",
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Viewbook(), state);
+      },
+    ),GoRoute(
+      path: "/book-payment-summary",
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(BookPaymentSuccess(), state);
+      },
+    ),
+    GoRoute(
+      path: "/book-details",
+      builder: (context, state) {
+        final data = state.extra as Map<String, dynamic>;
+
+        return BookDetailsPage(
+          image: data["image"],
+          title: data["title"],
+          author: data["author"],
+          description: data["description"],
+          price: data["price"] is String
+              ? double.tryParse(data["price"]) ?? 0.0
+              : data["price"],          // ✅ handles both String & double
+          isFree: data["isFree"],
+        );
+      },
+    ),
+    // GoRoute(
+    //   path: '/e',
+    //   pageBuilder: (context, state) {
+    //     return buildSlideTransitionPage(Ebookshome(), state);
+    //   },
+    // ),
+    GoRoute(
+      path: '/ebooks',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Ebookshome(), state);
+      },
+    ),
+
+    GoRoute(
+      path: '/uploadSuccess',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(UploadSuccessful(), state);
+      },
+    ),
+    GoRoute(
+      path: '/verifySuccess',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(VerifySuccessful(), state);
+      },
+    ),
+    GoRoute(
       path: '/uploadPage',
       pageBuilder: (context, state) {
-        return buildSlideTransitionPage(UploadPage(fileType: '',), state);
+        return buildSlideTransitionPage(UploadPage(fileType: ''), state);
       },
-    ),    GoRoute(
-      path: '/',
+    ),
+    GoRoute(
+      path: '/addNewDocument',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(AddNewDocument(), state);
       },
-    ),GoRoute(
+    ),
+    GoRoute(
       path: '/vaultDocuments',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(VaultDocs(), state);
       },
-    ),GoRoute(
+    ),
+    GoRoute(
       path: '/viewImage',
       pageBuilder: (context, state) {
         final data = state.extra as Map<String, String?>?;
@@ -77,34 +145,36 @@ final GoRouter appRouter = GoRouter(
         return MaterialPage(
           key: state.pageKey,
           child: ViewImagePage(
-            img: {
-              "name": data?["name"] ?? "",
-              "path": data?["path"] ?? "",
-            },
+            img: {"name": data?["name"] ?? "", "path": data?["path"] ?? ""},
           ),
         );
       },
-    ),GoRoute(
+    ),
+    GoRoute(
       path: '/viewDocument',
       pageBuilder: (context, state) {
-        return buildSlideTransitionPage(ViewDocumentPage(doc: {},), state);
+        return buildSlideTransitionPage(ViewDocumentPage(doc: {}), state);
       },
-    ), GoRoute(
+    ),
+    GoRoute(
       path: '/Documents',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(VaultDocs(), state);
       },
-    ), GoRoute(
+    ),
+    GoRoute(
       path: '/vaultotp',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Vaultotp(), state);
       },
-    ), GoRoute(
+    ),
+    GoRoute(
       path: '/vaultpin',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Vaultpin(), state);
       },
-    ),GoRoute(
+    ),
+    GoRoute(
       path: '/sp',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Splash(), state);
@@ -135,57 +205,68 @@ final GoRouter appRouter = GoRouter(
         return buildSlideTransitionPage(HomeScreen(), state);
         return buildSlideTransitionPage(UtilHome(), state);
       },
-    ), GoRoute(
+    ),
+    GoRoute(
       path: '/iron-vault',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(IronVault1(), state);
       },
-    ),GoRoute(
+    ),
+    GoRoute(
       path: '/utils',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(UtilHome(), state);
       },
-    ), GoRoute(
+    ),
+    GoRoute(
       path: '/notification',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(NotificationScreen(), state);
       },
-    ),GoRoute(
+    ),
+    GoRoute(
       path: '/downhistory',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(DownLoadHistory(), state);
       },
-    ),GoRoute(
+    ),
+    GoRoute(
       path: '/dsuccess',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(DeleteSuccess(), state);
       },
-    ),GoRoute(
+    ),
+    GoRoute(
       path: '/settings',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(SetMenu(), state);
       },
-    ), GoRoute(
+    ),
+    GoRoute(
       path: '/log',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Login(), state);
       },
-    ),GoRoute(
+    ),
+    GoRoute(
       path: '/otp',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(OtpScreen(), state);
       },
-    ),GoRoute(
+    ),
+    GoRoute(
       path: '/splash',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Splash(), state);
       },
-    ), GoRoute(
+    ),
+    GoRoute(
       path: '/sp18',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Splash18(), state);
       },
-    ), GoRoute(
+    ),
+    GoRoute(
       path: '/success',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Success(), state);
@@ -196,19 +277,25 @@ final GoRouter appRouter = GoRouter(
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(PodcastDetails(), state);
       },
-    ),GoRoute(
+    ),
+    GoRoute(
       path: '/payments',
       pageBuilder: (context, state) {
-        return buildSlideTransitionPage(Payments(), state);
+        final bool fromBook =
+            (state.extra as Map<String, dynamic>?)?["fromBook"] == true;
+
+        return buildSlideTransitionPage(
+          Payments(fromBookPage: fromBook),
+          state,
+        );
       },
-    ),GoRoute(
+    ),
+    GoRoute(
       path: '/plans',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Plans(), state);
       },
     ),
-
-
   ],
   // errorBuilder: (context, state) {
   //   final err = state.error ?? 'Unknown router error';
