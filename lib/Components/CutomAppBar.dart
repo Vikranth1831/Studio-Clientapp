@@ -36,23 +36,8 @@ class CustomAppBar1 extends StatelessWidget implements PreferredSizeWidget {
               child: const Icon(Icons.arrow_back, size: 24, color: Colors.white)),
         )
             : null,
-        title: Text(
-          title,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+
         actions: actions,
-          leading:  (!issetting) ?  IconButton(
-            visualDensity: VisualDensity.compact,
-            onPressed: () {
-              context.pop(true);
-            },
-            icon: const Icon(Icons.arrow_back, size: 24, color: Colors.white),
-          )
-              : null,
           title: Text(
             title,
             textAlign: isdocuments ? TextAlign.center : TextAlign.start,
@@ -62,7 +47,6 @@ class CustomAppBar1 extends StatelessWidget implements PreferredSizeWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          actions: actions,
         ),
       );
   }

@@ -35,8 +35,7 @@ class _PaymentsState extends State<Payments> {
       appBar:  (isWeb) ? null : CustomAppBar1(
         title: 'Payment',
         actions: const [],
-        issetting: false,
-        actions: const [], issetting: false,isdocuments: false,
+        issetting: false, isdocuments: false,
       ),
       body: isWeb ? _buildWebLayout(context, w, h) : _buildMobileLayout(context, w, h),
     );
