@@ -13,6 +13,10 @@ import 'package:clientapp_studio/Utilities/Iron%20Vault/vaultotp.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/vaultpin.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/viewdocument.dart';
 import 'package:clientapp_studio/Utilities/Legacy%20Wallet/legacyHome.dart';
+import 'package:clientapp_studio/Utilities/Legacy%20Wallet/legacyaccess.dart';
+import 'package:clientapp_studio/Utilities/Legacy%20Wallet/legacyadditem.dart';
+import 'package:clientapp_studio/Utilities/Legacy%20Wallet/uploadsuccess.dart';
+import 'package:clientapp_studio/Utilities/Legacy%20Wallet/viewimage.dart';
 import 'package:clientapp_studio/pages/VideoPlayer.dart';
 import 'package:clientapp_studio/pages/dashboard.dart';
 import 'package:clientapp_studio/pages/home_screen.dart';
@@ -68,11 +72,37 @@ final GoRouter appRouter = GoRouter(
   // overridePlatformDefaultLocation: false,
   routes: [
     GoRoute(
+      path: "/view-legacy-item",
+      builder: (context, state) {
+        final data = state.extra as Map<String, dynamic>;
+        return LegacyImageView(  imagePath: data["image"],);
+      },
+    ),
+    GoRoute(
       path: "/",
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Dashboard(), state);
+        return buildSlideTransitionPage(LegacyVaultAccess(), state);
       },
     ), GoRoute(
+      path: "/legacy-vault",
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(LegacyWalletHome(), state);
+      },
+    ),
+    GoRoute(
+      path: "/upload-success",
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(UploadSuccess(), state);
+      },
+    ),
+    GoRoute(
+      path: "/add-legacy-item",
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(LegacyAddImage(), state);
+      },
+    ),
+    GoRoute(
       path: "/viewBook",
       pageBuilder: (context, state) {
        // return buildSlideTransitionPage(Dashboard(), state);
