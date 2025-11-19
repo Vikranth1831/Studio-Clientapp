@@ -21,38 +21,42 @@ class _VaultDocsState extends State<VaultDocs> {
       "type": "PDF",
       "date": "12 Nov 2025",
       "size": "1.2 MB",
-      "file": "assets/docs/passport.pdf"
-    }, {
+      "file": "assets/docs/passport.pdf",
+    },
+    {
       "name": "Passport Copy",
       "type": "PDF",
       "date": "12 Nov 2025",
       "size": "1.2 MB",
-      "file": "assets/docs/passport.pdf"
-    }, {
+      "file": "assets/docs/passport.pdf",
+    },
+    {
       "name": "Passport Copy",
       "type": "PDF",
       "date": "12 Nov 2025",
       "size": "1.2 MB",
-      "file": "assets/docs/passport.pdf"
-    }, {
+      "file": "assets/docs/passport.pdf",
+    },
+    {
       "name": "Passport Copy",
       "type": "PDF",
       "date": "12 Nov 2025",
       "size": "1.2 MB",
-      "file": "assets/docs/passport.pdf"
-    }, {
+      "file": "assets/docs/passport.pdf",
+    },
+    {
       "name": "Passport Copy",
       "type": "PDF",
       "date": "12 Nov 2025",
       "size": "1.2 MB",
-      "file": "assets/docs/passport.pdf"
+      "file": "assets/docs/passport.pdf",
     },
     {
       "name": "Bank Statement",
       "type": "PDF",
       "date": "10 Nov 2025",
       "size": "980 KB",
-      "file": "assets/docs/bank.pdf"
+      "file": "assets/docs/bank.pdf",
     },
   ];
 
@@ -83,22 +87,27 @@ class _VaultDocsState extends State<VaultDocs> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 12),
-            child: InkWell(
-              onTap: () {
-                context.push("/addNewDocument");
+            child: Builder(
+              builder: (context) {
+                return InkWell(
+                  onTap: () {
+                    print('addnew file');
+                    context.push('/addNewDocument');
+                  },
+                  child: Container(
+                    width: w * 0.065,
+                    height: h * 0.03,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xffFBD7D7), width: 1),
+                    ),
+                    child: const Center(
+                      child: Icon(Icons.add, color: Color(0xffFBD7D7)),
+                    ),
+                  ),
+                );
               },
-              child: Container(
-                width: w * 0.065,
-                height: h * 0.03,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xffFBD7D7), width: 1),
-                ),
-                child: const Center(
-                  child: Icon(Icons.add, color: Color(0xffFBD7D7)),
-                ),
-              ),
             ),
-          )
+          ),
         ],
       ),
 
@@ -108,7 +117,6 @@ class _VaultDocsState extends State<VaultDocs> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             /// -----------------------------
             /// HEADING
             /// -----------------------------
@@ -147,7 +155,6 @@ class _VaultDocsState extends State<VaultDocs> {
 
                       child: Row(
                         children: [
-
                           /// LEFT ICON
                           Container(
                             width: w * 0.15,
@@ -187,12 +194,16 @@ class _VaultDocsState extends State<VaultDocs> {
                                     color: Color(0xffCCB58F),
                                     fontSize: 14,
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
 
-                          Icon(Icons.lock_outline, color: Colors.white, size: 28)
+                          Icon(
+                            Icons.lock_outline,
+                            color: Colors.white,
+                            size: 28,
+                          ),
                         ],
                       ),
                     ),
@@ -236,10 +247,10 @@ class _VaultDocsState extends State<VaultDocs> {
 
                   return InkWell(
                     onTap: () {
-                      context.push("/viewImage", extra:  {
-                        "name": img["name"],
-                        "path": img["path"],
-                      },);
+                      context.push(
+                        "/viewImage",
+                        extra: {"name": img["name"], "path": img["path"]},
+                      );
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -248,16 +259,13 @@ class _VaultDocsState extends State<VaultDocs> {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          img["path"]!,
-                          fit: BoxFit.cover,
-                        ),
+                        child: Image.asset(img["path"]!, fit: BoxFit.cover),
                       ),
                     ),
                   );
                 },
               ),
-            )
+            ),
           ],
         ),
       ),
