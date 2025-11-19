@@ -14,12 +14,15 @@ import 'package:clientapp_studio/Settings/right.dart';
 import 'package:clientapp_studio/Settings/settingsmenu.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/ivstart.dart';
 import 'package:clientapp_studio/Utilities/utilities.dart';
+import 'package:clientapp_studio/pages/listandgridfavourites.dart';
 import 'package:clientapp_studio/pages/notification.dart';
 import 'package:clientapp_studio/pages/otp.dart';
 import 'package:clientapp_studio/pages/payments.dart';
 import 'package:clientapp_studio/pages/phonelog.dart';
 import 'package:clientapp_studio/pages/plans.dart';
 import 'package:clientapp_studio/pages/podcast_details.dart';
+import 'package:clientapp_studio/pages/selecting_studio.dart';
+import 'package:clientapp_studio/pages/sending_studio.dart';
 import 'package:clientapp_studio/pages/splash.dart';
 import 'package:clientapp_studio/pages/splash18.dart';
 import 'package:clientapp_studio/pages/success.dart';
@@ -45,6 +48,8 @@ import 'package:go_router/go_router.dart';
 // import 'package:studio_app/presentation/sign_in_screen.dart';
 // import 'package:studio_app/presentation/splash_screen.dart';
 // import '../presentation/sucess_screen.dart';
+import '../pages/image_viewer.dart';
+import '../pages/upload_pictures.dart';
 import '../services/AuthService.dart';
 import '../utils/CrashlyticsNavObserver.dart';
 
@@ -62,12 +67,24 @@ final GoRouter appRouter = GoRouter(
     ),    GoRoute(
       path: '/',
       pageBuilder: (context, state) {
-        return buildSlideTransitionPage(AddNewDocument(), state);
+        return buildSlideTransitionPage(Dashboard(), state);
       },
     ),GoRoute(
       path: '/vaultDocuments',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(VaultDocs(), state);
+      },
+    ),
+    GoRoute(
+      path: '/list_grid',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Listandgridfavourites(), state);
+      },
+    ),
+    GoRoute(
+      path: '/upload',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(UploadPictures(), state);
       },
     ),GoRoute(
       path: '/viewImage',
@@ -135,7 +152,30 @@ final GoRouter appRouter = GoRouter(
         return buildSlideTransitionPage(HomeScreen(), state);
         return buildSlideTransitionPage(UtilHome(), state);
       },
-    ), GoRoute(
+    ),
+    GoRoute(
+      path: '/select_studio',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(SelectingStudio(), state);
+      },
+    ),
+    GoRoute(
+      path: '/image_viewer',
+      builder: (context, state) {
+        final data = state.extra as Map<String, dynamic>;
+
+        return ImageViewer(
+          images: data['images'],   // List<String>
+          initialIndex: data['index'], // int
+        );
+      },
+    ),
+    GoRoute(
+      path: '/send_studio',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(SendingStudio(), state);
+      },
+    ),GoRoute(
       path: '/iron-vault',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(IronVault1(), state);

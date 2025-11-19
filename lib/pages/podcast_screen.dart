@@ -14,12 +14,14 @@ class PodcastScreen extends StatefulWidget {
 
 class _PodcastScreenState extends State<PodcastScreen> {
   int selectedTab = 0;
-  final h=SizeConfig.screenHeight;
-  final w=SizeConfig.screenWidth;
+  bool showDetails = false; // 👈 NEW FOR WEB DETAILS PANEL
+
+  final h = SizeConfig.screenHeight;
+  final w = SizeConfig.screenWidth;
 
   @override
   Widget build(BuildContext context) {
-    final isweb=AppResponsive.isDesktop(context);
+    final isweb = AppResponsive.isDesktop(context);
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -27,7 +29,7 @@ class _PodcastScreenState extends State<PodcastScreen> {
         backgroundColor: Colors.black,
         elevation: 0,
         centerTitle: false,
-        title: Text(
+        title: const Text(
           "Podcast",
           style: TextStyle(
             fontSize: 26,
@@ -36,15 +38,92 @@ class _PodcastScreenState extends State<PodcastScreen> {
             color: Colors.white,
           ),
         ),
-
       ),
+
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: h * 0.012),
-        child: Column(
+
+        child: isweb
+            ? Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            /// ---------------- LEFT SIDE GRID ----------------
+            Expanded(
+              flex: showDetails ? 2 : 3,
+              child: Column(
+                children: [
+                  SizedBox(height: h * 0.008),
+
+                  StatusRows(
+                    width: w,
+                    height: h,
+                    statuses: ["All", "New", "Favorites"],
+                    selectedIndex: selectedTab,
+                    isweb: isweb,
+                    onSelected: (index) {
+                      setState(() {
+                        selectedTab = index;
+                      });
+                    },
+                  ),
+
+                  SizedBox(height: h * 0.015),
+
+                  Expanded(
+                    child: GridView.builder(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: showDetails ? 2 : 3,
+                        crossAxisSpacing: w * 0.015,
+                        mainAxisSpacing: h * 0.02,
+                        childAspectRatio: 1,
+                      ),
+                      itemCount: 9,
+                      itemBuilder: (context, index) {
+                        return EpisodeCard(
+                          width: w * 0.30,
+                          height: h,
+                          isweb: isweb,
+                          onWebTap: () {
+                            setState(() {
+                              showDetails = true;
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            /// ---------------- RIGHT DETAILS PANEL ----------------
+            if (showDetails) ...[
+              SizedBox(width: w * 0.03),
+
+              SizedBox(
+                width: w * 0.30,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: h * 0.063),
+                      EpisodeDetailHeaderWeb(width: w, height: h),
+                      SizedBox(height: h * 0.08),
+                      //NextPodcastCard(width: w, height: h),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ],
+        )
+
+        /// ---------------- MOBILE LAYOUT ----------------
+            : Column(
           children: [
             SizedBox(height: h * 0.008),
 
-            /// STATUS ROW (same for all)
             StatusRows(
               width: w,
               height: h,
@@ -60,26 +139,8 @@ class _PodcastScreenState extends State<PodcastScreen> {
 
             SizedBox(height: h * 0.015),
 
-            /// --------- EPISODE LIST / GRID BASED ON WEB OR MOBILE ---------
             Expanded(
-              child: isweb
-                  ? GridView.builder(
-                padding: const EdgeInsets.only(bottom: 20),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,          // 3 per row
-                  crossAxisSpacing: w * 0.015,
-                  mainAxisSpacing: h * 0.02,
-                  childAspectRatio: 1,     // Adjust for card height
-                ),
-                itemCount: 9, // or your dynamic list length
-                itemBuilder: (context, index) {
-                  return EpisodeCard(
-                    width: w * 0.30,   // adapt card width
-                    height: h, isweb: isweb,
-                  );
-                },
-              )
-                  : ListView.builder(
+              child: ListView.builder(
                 padding: const EdgeInsets.only(bottom: 20),
                 itemCount: 5,
                 itemBuilder: (context, index) {
@@ -88,7 +149,7 @@ class _PodcastScreenState extends State<PodcastScreen> {
                     child: EpisodeCard(
                       width: w,
                       height: h,
-                      isweb : isweb
+                      isweb: isweb,
                     ),
                   );
                 },
@@ -97,23 +158,203 @@ class _PodcastScreenState extends State<PodcastScreen> {
           ],
         ),
       ),
+    );
+  }
+  Widget EpisodeDetailHeaderWeb({
+    required double width,
+    required double height,
+  }) {
+    // Web-optimized responsive sizes
+    double titleSpacing = height * 0.008;
+    double sliderWidth = width * 0.80;     // Wider for web
+    double sliderThickness = height * 0.004;
+    double timeSpacing = height * 0.015;
+
+    double mainControlSize = width * 0.04;
+    double smallControlSize = width * 0.03;
+    double horizontalGap = width * 0.03;
+    double cardPadding = width * 0.008;
 
 
+    return Container(
+      padding: EdgeInsets.all(cardPadding),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.20),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+              width: w,
+              child: Image.asset('assets/images/podcast.png')
+          ),
+          SizedBox(height: h * 0.05,),
+
+          /// ------------------ TITLE + HEART ICON ------------------
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "First marriage trip",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,        // Bigger on web
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.bold,
+                      height: 1,
+                    ),
+                  ),
+
+                  SizedBox(height: titleSpacing),
+
+                  const Text(
+                    "Huberman Lab",
+                    style: TextStyle(
+                      color: Color(0xFFB8C1C7),
+                      fontSize: 13,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+
+              const Spacer(),
+
+              /// Heart button
+              SizedBox(
+                width: width * 0.02,
+                height: width * 0.02,
+                child: SvgPicture.asset(
+                  'assets/icons/heart.svg',
+                ),
+              ),
+            ],
+          ),
+
+         SizedBox(height: height * 0.02),
+
+          /// ------------------ PROGRESS BAR ------------------
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: sliderWidth,
+                height: sliderThickness,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF727271),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: FractionallySizedBox(
+                    widthFactor: 0.45,   // 45% played
+                    child: Container(
+                      height: sliderThickness,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: timeSpacing),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    "0:00",
+                    style: TextStyle(
+                      color: Color(0xFFA9B0B6),
+                      fontSize: 13,
+                    ),
+                  ),
+                  Text(
+                    "25:00",
+                    style: TextStyle(
+                      color: Color(0xFFA9B0B6),
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+
+          SizedBox(height: height * 0.03),
+
+          /// ------------------ PLAYER CONTROLS ------------------
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              /// Backward 10 seconds
+              SizedBox(
+                width: smallControlSize,
+                height: smallControlSize,
+                child: const Icon(
+                  Icons.fast_rewind,
+                  size: 20,
+                  color: Colors.white,
+                ),
+              ),
+
+              SizedBox(width: horizontalGap),
+
+              /// Play Button (large)
+              Container(
+                width: mainControlSize,
+                height: mainControlSize,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.play_arrow,
+                  size: 25,
+                  color: Colors.black,
+                ),
+              ),
+
+              SizedBox(width: horizontalGap),
+
+              /// Forward
+              SizedBox(
+                width: smallControlSize,
+                height: smallControlSize,
+                child: const Icon(
+                  Icons.fast_forward,
+                  size: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
-
 }
+
 class EpisodeCard extends StatelessWidget {
   final double width;
   final double height;
   final bool isweb;
+  final VoidCallback? onWebTap; // 👈 Added for web-only click
 
   const EpisodeCard({
     super.key,
     required this.width,
     required this.height,
     required this.isweb,
+    this.onWebTap,
   });
 
   @override
@@ -125,8 +366,13 @@ class EpisodeCard extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        context.push('/podcast_details');
+        if (isweb && onWebTap != null) {
+          onWebTap!();
+        } else {
+          context.push('/podcast_details');
+        }
       },
+
       child: Container(
         width: width,
         padding: EdgeInsets.all(cardPadding),
@@ -134,10 +380,11 @@ class EpisodeCard extends StatelessWidget {
           color: Colors.white.withOpacity(0.20),
           borderRadius: BorderRadius.circular(12),
         ),
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// ---------- IMAGE ----------
+            /// IMAGE
             Container(
               height: imageHeight,
               width: double.infinity,
@@ -152,7 +399,6 @@ class EpisodeCard extends StatelessWidget {
 
             SizedBox(height: height * 0.015),
 
-            /// ---------- TITLE ----------
             const Text(
               "First marriage trip",
               style: TextStyle(
@@ -165,7 +411,6 @@ class EpisodeCard extends StatelessWidget {
 
             SizedBox(height: height * 0.01),
 
-            /// ---------- DESCRIPTION ----------
             const Text(
               "Join us as we revisit our first trip after marriage — a journey filled with laughter, love, and unforgettable moments. From spontaneous adventures to quiet moments together, this episode captures the beauty of new beginnings and the joy of discovering life as a couple.",
               style: TextStyle(
@@ -180,7 +425,6 @@ class EpisodeCard extends StatelessWidget {
 
             SizedBox(height: height * 0.02),
 
-            /// ---------- ROW: ICON + PROGRESS + DURATION ----------
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -192,7 +436,6 @@ class EpisodeCard extends StatelessWidget {
 
                 SizedBox(width: width * 0.02),
 
-                /// Progress bar
                 Container(
                   width: progressWidth,
                   height: progressHeight,
@@ -204,7 +447,6 @@ class EpisodeCard extends StatelessWidget {
 
                 const Spacer(),
 
-                /// Duration
                 const Text(
                   "25 Min",
                   style: TextStyle(
