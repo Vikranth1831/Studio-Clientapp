@@ -3,27 +3,23 @@ import 'package:clientapp_studio/Utilities/E-books/bookPaymentSuccess.dart';
 import 'package:clientapp_studio/Utilities/E-books/descriptionPage.dart';
 import 'package:clientapp_studio/Utilities/E-books/ebooksHome.dart';
 import 'package:clientapp_studio/Utilities/E-books/viewBook.dart';
+import 'package:clientapp_studio/Utilities/General%20Vault/generalupload.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/UploadPage.dart';
-import 'package:clientapp_studio/Utilities/Iron%20Vault/VerifiedPage.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/addnewfile.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/documents.dart';
-import 'package:clientapp_studio/Utilities/Iron%20Vault/uploadSuccessful.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/vaultImage.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/vaultotp.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/vaultpin.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/viewdocument.dart';
 import 'package:clientapp_studio/Utilities/Legacy%20Wallet/legacyHome.dart';
-import 'package:clientapp_studio/Utilities/Legacy%20Wallet/legacyaccess.dart';
-import 'package:clientapp_studio/Utilities/Legacy%20Wallet/legacyadditem.dart';
-import 'package:clientapp_studio/Utilities/Legacy%20Wallet/uploadsuccess.dart';
+import 'package:clientapp_studio/Utilities/Legacy%20Wallet/vaultUpload.dart';
 import 'package:clientapp_studio/Utilities/Legacy%20Wallet/viewimage.dart';
 import 'package:clientapp_studio/pages/VideoPlayer.dart';
 import 'package:clientapp_studio/pages/dashboard.dart';
 import 'package:clientapp_studio/pages/home_screen.dart';
 import 'package:clientapp_studio/Settings/dhistory.dart';
-import 'package:clientapp_studio/Settings/right.dart';
 import 'package:clientapp_studio/Settings/settingsmenu.dart';
-import 'package:clientapp_studio/Utilities/Iron%20Vault/ivstart.dart';
+import 'package:clientapp_studio/Utilities/Iron%20Vault/vaultStart.dart';
 import 'package:clientapp_studio/Utilities/utilities.dart';
 import 'package:clientapp_studio/pages/listandgridfavourites.dart';
 import 'package:clientapp_studio/pages/movie_details.dart';
@@ -78,30 +74,30 @@ final GoRouter appRouter = GoRouter(
         return LegacyImageView(  imagePath: data["image"],);
       },
     ),
-    GoRoute(
-      path: "/",
-      pageBuilder: (context, state) {
-        return buildSlideTransitionPage(Dashboard(), state);
-        return buildSlideTransitionPage(LegacyVaultAccess(), state);
-      },
-    ), GoRoute(
+     GoRoute(
       path: "/legacy-vault",
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(LegacyWalletHome(), state);
       },
     ),
+
+
     GoRoute(
-      path: "/upload-success",
-      pageBuilder: (context, state) {
-        return buildSlideTransitionPage(UploadSuccess(), state);
+      path: '/legacy-upload',
+      builder: (context, state) {
+        final data = state.extra as Map<String, dynamic>;
+
+        return CommonLegacyUpload(
+          fromPath: data["fromPath"] as String,
+          appBarTitle: data["appBarTitle"] as String,
+          uploadHeading: data["uploadHeading"] as String,
+          uploadInfoText: data["uploadInfoText"] as String,
+          buttonText: data["buttonText"] as String,
+          nextPath: data["nextPath"] as String,
+        );
       },
     ),
-    GoRoute(
-      path: "/add-legacy-item",
-      pageBuilder: (context, state) {
-        return buildSlideTransitionPage(LegacyAddImage(), state);
-      },
-    ),
+
     GoRoute(
       path: "/viewBook",
       pageBuilder: (context, state) {
@@ -150,18 +146,8 @@ final GoRouter appRouter = GoRouter(
       },
     ),
 
-    GoRoute(
-      path: '/uploadSuccess',
-      pageBuilder: (context, state) {
-        return buildSlideTransitionPage(UploadSuccessful(), state);
-      },
-    ),
-    GoRoute(
-      path: '/verifySuccess',
-      pageBuilder: (context, state) {
-        return buildSlideTransitionPage(VerifySuccessful(), state);
-      },
-    ),
+
+
     GoRoute(
       path: '/uploadPage',
       pageBuilder: (context, state) {
@@ -219,14 +205,21 @@ final GoRouter appRouter = GoRouter(
       },
     ),
     GoRoute(
-      path: '/vaultotp',
-      pageBuilder: (context, state) {
-        return buildSlideTransitionPage(Vaultotp(), state);
+      path: '/otpcommon',
+      builder: (context, state) {
+        final data = state.extra as Map<String, dynamic>;
+
+        return CommonOtpScreen(
+          title: data["title"],
+          buttonText: data["btn"],
+          nextPath: data["path"],
+        );
       },
     ),
     GoRoute(
       path: '/vaultpin',
       pageBuilder: (context, state) {
+
         return buildSlideTransitionPage(Vaultpin(), state);
       },
     ),
@@ -236,7 +229,18 @@ final GoRouter appRouter = GoRouter(
         return buildSlideTransitionPage(Splash(), state);
       },
     ),
+   GoRoute(
+      path: '/',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Dashboard(), state);
+      },
+    ),
     GoRoute(
+      path: '/upload-new',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Generalupload(), state);
+      },
+    ), GoRoute(
       path: '/dashboard',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Dashboard(), state);
@@ -286,9 +290,17 @@ final GoRouter appRouter = GoRouter(
 
     ),
     GoRoute(
-      path: '/iron-vault',
-      pageBuilder: (context, state) {
-        return buildSlideTransitionPage(IronVault1(), state);
+      path: '/ironvault',
+      builder: (context, state) {
+        final data = state.extra as Map<String, dynamic>;
+
+        return CommonIronVault(
+          imagePath: data["image"],
+          title: data["title"],
+          subTitle: data["sub"],
+          buttonText: data["btn"],
+          nextPath: data["path"],
+        );
       },
     ),
     GoRoute(
@@ -309,12 +321,7 @@ final GoRouter appRouter = GoRouter(
         return buildSlideTransitionPage(DownLoadHistory(), state);
       },
     ),
-    GoRoute(
-      path: '/dsuccess',
-      pageBuilder: (context, state) {
-        return buildSlideTransitionPage(DeleteSuccess(), state);
-      },
-    ),
+
     GoRoute(
       path: '/settings',
       pageBuilder: (context, state) {
@@ -347,8 +354,16 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: '/success',
-      pageBuilder: (context, state) {
-        return buildSlideTransitionPage(Success(), state);
+      builder: (context, state) {
+        final data = state.extra as Map<String, dynamic>;
+
+        return CommonSuccessScreen(
+          imagePath: data["image"],
+          title: data["title"],
+          subTitle: data["sub"],
+          buttonText: data["btn"],
+          nextPath: data["path"],
+        );
       },
     ),
     GoRoute(

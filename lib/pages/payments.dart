@@ -229,9 +229,23 @@ class _PaymentsState extends State<Payments> {
             // If opened from BookDetails → go to YOUR PATH
             if (widget.fromBookPage) {
               print("print");
-              context.push("/book-payment-summary"); // << CHANGE HERE
+              context.push('/success',
+                extra: {
+                  "image": "assets/images/new.png",
+                  "title": "Payment Successful!",
+                  "sub": "Your subscription has started!",
+                  "btn": "Continue",
+                  "path": "/home"
+                },); // << CHANGE HERE
             } else {
-              context.push("/success");
+              context.push('/success',
+                extra: {
+                  "image": "assets/images/new.png",
+                  "title": "Payment Successful!",
+                  "sub": "Your subscription has started!",
+                  "btn": "Continue",
+                  "path": "/home"
+                },);
             }
           },
           child: Text(
