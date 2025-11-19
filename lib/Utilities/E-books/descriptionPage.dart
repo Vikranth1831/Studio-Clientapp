@@ -1,3 +1,4 @@
+import 'package:clientapp_studio/utils/app_responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,6 +25,8 @@ class BookDetailsPage extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
     final width  = MediaQuery.of(context).size.width;
 
+    bool isweb=AppResponsive.isDesktop(context);
+
     return Scaffold(
       backgroundColor: Colors.black,
 
@@ -38,7 +41,7 @@ class BookDetailsPage extends StatelessWidget {
         ),
 
         centerTitle: true,
-        title: const Text(
+        title: (!isweb) ?  Text(
           "Book Info",
           style: TextStyle(
             color: Colors.white,
@@ -46,24 +49,25 @@ class BookDetailsPage extends StatelessWidget {
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
-        ),
+
+      ) : null,
       ),
 
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(width * 0.05),
+        padding: EdgeInsets.all((isweb) ? width * 0.01 : width * 0.05),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
             /// IMAGE
             Container(
-              height: height * 0.250,
+              height:(isweb) ? height * 0.95 :  height * 0.250,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 image: DecorationImage(
                   image: AssetImage(image),
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                 ),
               ),
             ),
@@ -108,15 +112,51 @@ class BookDetailsPage extends StatelessWidget {
                 ),
 
                 /// PRICE ON RIGHT
-                Text(
-                  isFree ? "Free" : "₹$price",
-                  style: TextStyle(
-                    color: Color(0xffFFFFFF),
-                    fontSize: 28,
-                    fontFamily: "Inter",
-                    fontWeight: FontWeight.bold,
-                    decoration: isFree ? TextDecoration.lineThrough : null,
-                  ),
+                Column(
+                  children: [
+                    Text(
+                      isFree ? "Free" : "₹$price",
+                      style: TextStyle(
+                        color: Color(0xffFFFFFF),
+                        fontSize: 28,
+                        fontFamily: "Inter",
+                        fontWeight: FontWeight.bold,
+                        decoration: isFree ? TextDecoration.lineThrough : null,
+                      ),
+                    ),
+                    if(isweb)
+                    Column(
+                      children: [
+                        SizedBox(height: height*0.01,),
+                        InkWell(
+                          onTap: ()
+                          {
+                            context.push('/payments',extra: {"fromBook":true});
+                          },
+                          child: Container(
+                            padding:  EdgeInsets.symmetric(vertical: height * 0.02,
+                                horizontal: width *  0.03),
+                            decoration: ShapeDecoration(
+                              color: const Color(0xFFFEBE01),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                            child: Text(
+                              'Buy Now',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: const Color(0xFF333333),
+                                fontSize: 16,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               ],
             ),
@@ -138,9 +178,9 @@ class BookDetailsPage extends StatelessWidget {
       ),
 
       /// BOTTOM BUY BUTTON
-      bottomNavigationBar: SafeArea(
+      bottomNavigationBar: (!isweb) ?  SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(width * 0.045),
+          padding: EdgeInsets.all((isweb) ? width * 0.02 : width * 0.045),
 
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -168,7 +208,7 @@ class BookDetailsPage extends StatelessWidget {
             ),
           ),
         ),
-      ),
+      ) : null
     );
   }
 }

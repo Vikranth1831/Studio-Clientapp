@@ -22,6 +22,7 @@ import 'package:clientapp_studio/Settings/settingsmenu.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/ivstart.dart';
 import 'package:clientapp_studio/Utilities/utilities.dart';
 import 'package:clientapp_studio/pages/listandgridfavourites.dart';
+import 'package:clientapp_studio/pages/movie_details.dart';
 import 'package:clientapp_studio/pages/notification.dart';
 import 'package:clientapp_studio/pages/otp.dart';
 import 'package:clientapp_studio/pages/payments.dart';
@@ -69,18 +70,24 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: "/",
       pageBuilder: (context, state) {
-        return buildSlideTransitionPage(LegacyWalletHome(), state);
+        return buildSlideTransitionPage(Dashboard(), state);
       },
     ), GoRoute(
       path: "/viewBook",
       pageBuilder: (context, state) {
-        return buildSlideTransitionPage(Dashboard(), state);
+       // return buildSlideTransitionPage(Dashboard(), state);
         return buildSlideTransitionPage(Viewbook(), state);
       },
     ),GoRoute(
       path: "/book-payment-summary",
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(BookPaymentSuccess(), state);
+      },
+    ),
+    GoRoute(
+      path: "/movie_details",
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(MovieDetails(), state);
       },
     ),
     GoRoute(
@@ -154,7 +161,7 @@ final GoRouter appRouter = GoRouter(
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(UploadPictures(), state);
       },
-    ),GoRoute(
+
     ),
     GoRoute(
       path: '/viewImage',
@@ -222,7 +229,6 @@ final GoRouter appRouter = GoRouter(
       path: '/home',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(HomeScreen(), state);
-        return buildSlideTransitionPage(UtilHome(), state);
       },
     ),
     GoRoute(
@@ -247,7 +253,7 @@ final GoRouter appRouter = GoRouter(
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(SendingStudio(), state);
       },
-    ),GoRoute(
+
     ),
     GoRoute(
       path: '/iron-vault',

@@ -43,7 +43,7 @@ class _PaymentsState extends State<Payments> {
             fontFamily: "Inter"
           ),),
         ),
-        body: _mobileLayout(context, w, h),
+        body:(isWeb) ? _centerCardLayout(context, w, h,widget.fromBookPage) :  _mobileLayout(context, w, h),
       );
     }
 
@@ -57,7 +57,7 @@ class _PaymentsState extends State<Payments> {
         title: const Text("Payments"),
       ),
       body: isWeb
-          ? _centerCardLayout(context, w, h)
+          ? _centerCardLayout(context, w, h,widget.fromBookPage)
           : _mobileLayout(context, w, h),
     );
   }
@@ -84,16 +84,18 @@ class _PaymentsState extends State<Payments> {
           Expanded(child: paymentList(w, h, false)),
 
           continueButton(w, h, false),
+          SizedBox(height: h * 0.05),
         ],
       ),
     );
   }
 
   // ---------------- CENTER CARD LAYOUT (used for fromBookPage + Desktop) ----------------
-  Widget _centerCardLayout(BuildContext context, double w, double h) {
+  Widget _centerCardLayout(BuildContext context, double w, double h,bool fromebook) {
     return Stack(
       children: [
-        // Background blur layer
+
+        if(!fromebook)
         Positioned.fill(
           child: Stack(
             children: [
@@ -115,7 +117,7 @@ class _PaymentsState extends State<Payments> {
 
         Center(
           child: Card(
-            elevation: 18,
+          //  elevation: 18,
             color: Colors.black.withOpacity(0.75),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
@@ -141,6 +143,7 @@ class _PaymentsState extends State<Payments> {
                   Expanded(child: paymentList(w, h, true)),
 
                   continueButton(w, h, true),
+
                 ],
               ),
             ),
@@ -208,6 +211,7 @@ class _PaymentsState extends State<Payments> {
   // ---------------- CONTINUE BUTTON ----------------
   Widget continueButton(double w, double h, bool isWeb) {
     bool enableButton = selectedIndex != -1;
+    print(widget.fromBookPage);
 
     return SafeArea(
       child: SizedBox(
@@ -224,6 +228,7 @@ class _PaymentsState extends State<Payments> {
               : () {
             // If opened from BookDetails → go to YOUR PATH
             if (widget.fromBookPage) {
+              print("print");
               context.push("/book-payment-summary"); // << CHANGE HERE
             } else {
               context.push("/success");

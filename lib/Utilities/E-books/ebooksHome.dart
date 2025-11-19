@@ -1,4 +1,5 @@
 import 'package:clientapp_studio/Components/CutomAppBar.dart';
+import 'package:clientapp_studio/utils/app_responsive.dart';
 import 'package:clientapp_studio/utils/media_query_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -62,6 +63,8 @@ class _EbookshomeState extends State<Ebookshome> {
     final h = SizeConfig.screenHeight;
     final w = SizeConfig.screenWidth;
 
+    final isweb=AppResponsive.isDesktop(context);
+
     return Scaffold(
       backgroundColor: Colors.black,
 
@@ -77,11 +80,11 @@ class _EbookshomeState extends State<Ebookshome> {
 
         child: GridView.builder(
           itemCount: books.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 12,
-            crossAxisSpacing: 12,
-            childAspectRatio: 0.65,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: isweb ? 4 : 2,
+            mainAxisSpacing: isweb ? 20 : 12,
+            crossAxisSpacing: isweb ? 20 : 12,
+            childAspectRatio: isweb ? 1.2 : 0.62,
           ),
 
           itemBuilder: (context, index) {
@@ -126,7 +129,7 @@ class _EbookshomeState extends State<Ebookshome> {
                         borderRadius: BorderRadius.circular(16),
                         child: Image.asset(
                           data["image"]!,
-                          height: h * 0.20,
+                          height:(isweb) ? h * 0.25 :  h * 0.20,
                           width: double.infinity,
                           fit: BoxFit.cover,
                         ),
@@ -214,4 +217,5 @@ class _EbookshomeState extends State<Ebookshome> {
       ),
     );
   }
+
 }

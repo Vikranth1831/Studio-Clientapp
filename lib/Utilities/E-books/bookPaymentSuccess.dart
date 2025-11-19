@@ -108,32 +108,12 @@ class _BookPaymentSuccessState extends State<BookPaymentSuccess> {
   Widget _buildWebLayout(BuildContext context, double w, double h) {
     return Stack(
       children: [
-        // Background + Blur
-        Positioned.fill(
-          child: Stack(
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/splash_image.png"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                child: Container(
-                  color: Colors.black.withOpacity(0.25),
-                ),
-              ),
-            ],
-          ),
-        ),
+
 
         // Center Card
         Center(
           child: Card(
-            elevation: 16,
+         //   elevation: 16,
             color: Colors.black.withOpacity(0.75),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18),
@@ -154,7 +134,7 @@ class _BookPaymentSuccessState extends State<BookPaymentSuccess> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Image.asset(
-                            'assets/images/new.png',
+                            'assets/images/successgreen.png',
                             width: w * 0.15,
                             height: h * 0.18,
                           ),
@@ -162,7 +142,7 @@ class _BookPaymentSuccessState extends State<BookPaymentSuccess> {
                           SizedBox(height: h * 0.02),
 
                           Text(
-                            'Payment BookPaymentSuccessful!',
+                            'Payment Done\nSuccessfully',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
@@ -172,16 +152,16 @@ class _BookPaymentSuccessState extends State<BookPaymentSuccess> {
                           ),
 
                           SizedBox(height: h * 0.02),
-
-                          Text(
-                            'Your subscription plan has been\nsuccessfully activated!',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: w * 0.013,
-                              height: 1.5,
-                            ),
-                          ),
+                          //
+                          // Text(
+                          //   'Your subscription plan has been\nsuccessfully activated!',
+                          //   textAlign: TextAlign.center,
+                          //   style: TextStyle(
+                          //     color: Colors.white70,
+                          //     fontSize: w * 0.013,
+                          //     height: 1.5,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -197,9 +177,9 @@ class _BookPaymentSuccessState extends State<BookPaymentSuccess> {
                           borderRadius: BorderRadius.circular(40),
                         ),
                       ),
-                      onPressed: () => context.go('/sp18'),
+                      onPressed: () => context.go("/viewBook"),
                       child: Text(
-                        "Continue",
+                        "View Book",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: w * 0.015,
