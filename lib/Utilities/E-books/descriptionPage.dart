@@ -148,7 +148,7 @@ class BookDetailsPage extends StatelessWidget {
                               style: TextStyle(
                                 color: const Color(0xFF333333),
                                 fontSize: 16,
-                                fontFamily: 'Poppins',
+                                fontFamily: 'Inter',
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -194,11 +194,11 @@ class BookDetailsPage extends StatelessWidget {
             ),
 
             onPressed: () {
-              context.push('/payments',extra: {"fromBook":true});
+              context.push('/payments',extra: { "fromBook": true});
             },
 
             child: Text(
-              isFree ? "Get for Free" : "Buy Now",
+               "Buy Now",
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 16,

@@ -6,7 +6,7 @@ import '../utils/app_responsive.dart';
 class Payments extends StatefulWidget {
   final bool fromBookPage; // when true → open centered card
 
-  const Payments({super.key, this.fromBookPage = false});
+   Payments({super.key, required this.fromBookPage});
 
   @override
   State<Payments> createState() => _PaymentsState();
@@ -43,7 +43,7 @@ class _PaymentsState extends State<Payments> {
             fontFamily: "Inter"
           ),),
         ),
-        body:(isWeb) ? _centerCardLayout(context, w, h,widget.fromBookPage) :  _mobileLayout(context, w, h),
+        body:(isWeb) ? _centerCardLayout(context, w, h,widget.fromBookPage) :  _mobileLayout(context, w, h,widget.fromBookPage),
       );
     }
 
@@ -58,12 +58,12 @@ class _PaymentsState extends State<Payments> {
       ),
       body: isWeb
           ? _centerCardLayout(context, w, h,widget.fromBookPage)
-          : _mobileLayout(context, w, h),
+          : _mobileLayout(context, w, h,widget.fromBookPage),
     );
   }
 
   // ---------------- MOBILE NORMAL LAYOUT ----------------
-  Widget _mobileLayout(BuildContext context, double w, double h) {
+  Widget _mobileLayout(BuildContext context, double w, double h, bool fromBookPage) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: w * 0.05),
       child: Column(
@@ -196,7 +196,7 @@ class _PaymentsState extends State<Payments> {
                   height: circleSize,
                   width: circleSize,
                   decoration: const BoxDecoration(
-                    color: Color(0xffDBAF73),
+                    color: Color(0xfff5b91c),
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -231,7 +231,6 @@ class _PaymentsState extends State<Payments> {
               print("print");
               context.push('/success',
                 extra: {
-
                   "image": "assets/images/successgreen.png",
                   "title": "Payment Done\nSuccessfully",
                   "sub": "",

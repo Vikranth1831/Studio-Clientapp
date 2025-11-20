@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:clientapp_studio/utils/app_responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -24,6 +23,7 @@ class _LoginState extends State<Login> {
 
     return Scaffold(
       backgroundColor: Colors.black,
+      resizeToAvoidBottomInset: false,   // ⭐ FIXED BUTTON
       body: SafeArea(
         child: isWeb
             ? _buildWebLayout(width, height)
@@ -32,99 +32,105 @@ class _LoginState extends State<Login> {
     );
   }
 
-  // ------------------------------- MOBILE UI (UNCHANGED) -----------------------------
+  // ------------------------------- MOBILE UI -----------------------------
   Widget _buildMobileLayout(double width, double height) {
-    return Column(
+    return Stack(
       children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: Center(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(height: height * 0.03),
+        Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Center(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: height * 0.03),
 
-                    Image.asset(
-                      'assets/images/log.png',
-                      width: width * 0.6,
-                      height: height * 0.35,
-                    ),
-
-                    SizedBox(height: height * 0.03),
-
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '  Hello!',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: width * 0.06,
-                          fontWeight: FontWeight.bold,
+                        Image.asset(
+                          'assets/images/log.png',
+                          width: width * 0.6,
+                          height: height * 0.35,
                         ),
-                      ),
-                    ),
 
-                    SizedBox(height: height * 0.001),
+                        SizedBox(height: height * 0.03),
 
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '  Enter your phone number',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: width * 0.04,
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(height: height * 0.015),
-
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: _phoneController,
-                        keyboardType: TextInputType.phone,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          hintText: 'Enter your phone number',
-                          hintStyle: const TextStyle(color: Colors.white54),
-                          filled: true,
-                          fillColor: Colors.grey[900],
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide.none,
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '  Hello!',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: width * 0.06,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 16),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your phone number';
-                          } else if (value.length != 10) {
-                            return 'Enter a valid 10-digit number';
-                          }
-                          return null;
-                        },
-                      ),
+
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '  Enter your phone number',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: width * 0.04,
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(height: height * 0.02),
+
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            controller: _phoneController,
+                            keyboardType: TextInputType.phone,
+                            style: const TextStyle(color: Colors.white),
+                            maxLength: 10,
+                            onChanged: (value) {
+                              if (value.length == 10) {
+                                FocusScope.of(context).unfocus(); // ⭐ AUTO CLOSE
+                              }
+                            },
+                            decoration: InputDecoration(
+                              counterText: "",
+                              hintText: 'Enter your phone number',
+                              hintStyle: const TextStyle(color: Colors.white54),
+                              filled: true,
+                              fillColor: Colors.grey[900],
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your phone number';
+                              } else if (value.length != 10) {
+                                return 'Enter a valid 10-digit number';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
+            const SizedBox(height: 100), // space above bottom button
+          ],
         ),
 
-        Padding(
-          padding: EdgeInsets.only(
-            bottom: height * 0.05,
-            left: width * 0.08,
-            right: width * 0.08,
-          ),
+        // ⭐ FIXED BOTTOM BUTTON
+        Positioned(
+          bottom: height * 0.05,
+          left: width * 0.08,
+          right: width * 0.08,
           child: SizedBox(
-            width: double.infinity,
             height: height * 0.065,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -135,13 +141,10 @@ class _LoginState extends State<Login> {
               ),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  context.push(
-                    '/otp',
-                    extra: {
-                      "isComing": true,
-                      "fromPath": "phonelog",
-                    },
-                  );
+                  context.push('/otp', extra: {
+                    "isComing": true,
+                    "fromPath": "phonelog",
+                  });
                 }
               },
               child: Text(
@@ -159,14 +162,12 @@ class _LoginState extends State<Login> {
     );
   }
 
-  // ------------------------------- WEB UI -----------------------------
+  // ------------------------------- WEB UI (UNCHANGED) -----------------------------
   Widget _buildWebLayout(double width, double height) {
     return Form(
       key: _formKey,
       child: Stack(
         children: [
-          /// BACKGROUND IMAGE
-          /// BLURRED BACKGROUND IMAGE
           Positioned.fill(
             child: Stack(
               children: [
@@ -179,39 +180,15 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4), // STRONG BLUR
+                  filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                   child: Container(
-                    color: Colors.black.withOpacity(0.4), // slight dark layer
+                    color: Colors.black.withOpacity(0.4),
                   ),
                 ),
               ],
             ),
           ),
 
-
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              width: width,
-              height: height * 1,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [
-                    Color.fromARGB(200, 0, 0, 0),   // strong black at bottom
-                    Color.fromARGB(120, 0, 0, 0),   // fading
-                    Color.fromARGB(120, 0, 0, 0),   // fading
-
-                    Color.fromARGB(20, 0, 0, 0),    // very light
-                    Colors.transparent,             // smooth end
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          /// CENTER CARD
           Center(
             child: Container(
               width: width * 0.32,
@@ -225,10 +202,7 @@ class _LoginState extends State<Login> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(
-                    'assets/images/log.png',
-                    width: width * 0.18,
-                  ),
+                  Image.asset('assets/images/log.png', width: width * 0.18),
 
                   const SizedBox(height: 15),
 
@@ -257,12 +231,18 @@ class _LoginState extends State<Login> {
 
                   const SizedBox(height: 15),
 
-                  /// PHONE FIELD
                   TextFormField(
                     controller: _phoneController,
                     keyboardType: TextInputType.phone,
                     style: const TextStyle(color: Colors.white),
+                    maxLength: 10,
+                    onChanged: (value) {
+                      if (value.length == 10) {
+                        FocusScope.of(context).unfocus();
+                      }
+                    },
                     decoration: InputDecoration(
+                      counterText: "",
                       hintText: 'Enter your phone number',
                       hintStyle: const TextStyle(color: Colors.white54),
                       filled: true,
@@ -282,7 +262,6 @@ class _LoginState extends State<Login> {
                     },
                   ),
 
-
                   const SizedBox(height: 25),
 
                   SizedBox(
@@ -297,14 +276,11 @@ class _LoginState extends State<Login> {
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-
-                          context.push(
-                            '/otp',
-                            extra: {
-                              "isComing": true,
-                              "fromPath": "phonelog",
-                            },
-                          );                    }
+                          context.push('/otp', extra: {
+                            "isComing": true,
+                            "fromPath": "phonelog",
+                          });
+                        }
                       },
                       child: Text(
                         "Send OTP",
@@ -325,4 +301,3 @@ class _LoginState extends State<Login> {
     );
   }
 }
-

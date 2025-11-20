@@ -10,7 +10,7 @@ class CommonSuccessScreen extends StatelessWidget {
   final String buttonText;
   final String nextPath;
 
-  // ⭐ ADDING THIS
+
   final String fromPath;
 
   const CommonSuccessScreen({
@@ -21,7 +21,7 @@ class CommonSuccessScreen extends StatelessWidget {
     required this.buttonText,
     required this.nextPath,
 
-    // ⭐ DEFAULT VALUE ADDED
+
     this.fromPath = "",
   });
 
