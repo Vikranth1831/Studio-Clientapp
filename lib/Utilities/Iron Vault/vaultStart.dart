@@ -1,65 +1,63 @@
-import 'package:clientapp_studio/utils/app_responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../utils/media_query_helper.dart';
+import 'package:clientapp_studio/utils/app_responsive.dart';
 
-class IronVault1 extends StatefulWidget {
-  const IronVault1({super.key});
+class CommonIronVault extends StatelessWidget {
+  final String imagePath;
+  final String title;
+  final String subTitle;
+  final String buttonText;
+  final String nextPath;
 
-  @override
-  State<IronVault1> createState() => _IronVault1State();
-}
+  const CommonIronVault({
+    super.key,
+    required this.imagePath,
+    required this.title,
+    required this.subTitle,
+    required this.buttonText,
+    required this.nextPath,
+  });
 
-class _IronVault1State extends State<IronVault1> {
   @override
   Widget build(BuildContext context) {
     final double h = SizeConfig.screenHeight;
     final double w = SizeConfig.screenWidth;
-    final bool isweb = AppResponsive.isDesktop(context);
+    final bool isWeb = AppResponsive.isDesktop(context);
 
     return Scaffold(
       backgroundColor: Colors.black,
-
       body: Center(
-        child: isweb
-            ? _buildWebLayout(h, w)   // For desktop/web
-            : _buildMobileLayout(h, w), // For mobile
+        child: isWeb ? _buildWebLayout(h, w, context) : _buildMobileLayout(h, w, context),
       ),
     );
   }
 
-  /// ---------------- WEB LAYOUT ----------------
-  Widget _buildWebLayout(double h, double w) {
+  // ---------------- WEB ----------------
+  Widget _buildWebLayout(double h, double w, BuildContext context) {
     return Container(
       width: w * 0.5,
       padding: const EdgeInsets.all(32),
       decoration: ShapeDecoration(
-        color: Colors.white.withValues(alpha: 0.10),
+        color: Colors.white.withOpacity(0.10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
       ),
-
-
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-
-          /// IMAGE
           SizedBox(
             height: 230,
-            child: Image.asset(
-              'assets/images/imagesh.png',
-              fit: BoxFit.contain,
-            ),
+            child: Image.asset(imagePath, fit: BoxFit.contain),
           ),
 
           const SizedBox(height: 25),
 
-          /// BOLD TEXT
-          const Text(
-            "Secure Document Vault",
+          Text(
+            title,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontFamily: 'Inter',
               fontSize: 22,
@@ -69,11 +67,10 @@ class _IronVault1State extends State<IronVault1> {
 
           const SizedBox(height: 10),
 
-          /// NORMAL TEXT
-          const Text(
-            "Your Sensitive Documents Are Protected with\nMulti layer Security verification",
+          Text(
+            subTitle,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Inter',
               color: Colors.white70,
               fontSize: 15,
@@ -83,7 +80,6 @@ class _IronVault1State extends State<IronVault1> {
 
           const SizedBox(height: 35),
 
-          /// BUTTON
           Container(
             width: 280,
             height: 55,
@@ -99,18 +95,16 @@ class _IronVault1State extends State<IronVault1> {
               ),
             ),
             child: InkWell(
-              onTap: () {
-                
-              },
+              onTap: () => context.go(nextPath),
               borderRadius: BorderRadius.circular(50),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset('assets/icons/Lock.png', color: Colors.black),
                   const SizedBox(width: 10),
-                  const Text(
-                    "Access Iron Vault",
-                    style: TextStyle(
+                  Text(
+                    buttonText,
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -125,26 +119,25 @@ class _IronVault1State extends State<IronVault1> {
     );
   }
 
-  /// ---------------- MOBILE LAYOUT (NO CHANGES) ----------------
-  Widget _buildMobileLayout(double h, double w) {
+  // ---------------- MOBILE ----------------
+  Widget _buildMobileLayout(double h, double w, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-
-          Container(
-            child: Image.asset('assets/images/imagesh.png'),
+          SizedBox(
             height: h * 0.3,
-            width: w * 1,
+            width: w,
+            child: Image.asset(imagePath),
           ),
 
           SizedBox(height: h * 0.03),
 
           Text(
-            "Secure Document Vault",
+            title,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontFamily: 'Inter',
               fontSize: 18,
@@ -155,7 +148,7 @@ class _IronVault1State extends State<IronVault1> {
           SizedBox(height: h * 0.01),
 
           Text(
-            "Your Sensitive Documents Are Protected with \n Multi layer Security verification",
+            subTitle,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'Inter',
@@ -171,7 +164,7 @@ class _IronVault1State extends State<IronVault1> {
             height: h * 0.065,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 colors: [
                   Color(0xFFFEBE01),
                   Color(0xFFD69E9E),
@@ -181,14 +174,14 @@ class _IronVault1State extends State<IronVault1> {
               ),
             ),
             child: InkWell(
-              onTap: () {},
+              onTap: () => context.go(nextPath),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset('assets/icons/Lock.png', color: Colors.black),
                   SizedBox(width: w * 0.02),
                   Text(
-                    "Access Iron Vault",
+                    buttonText,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: w * 0.045,
@@ -204,4 +197,3 @@ class _IronVault1State extends State<IronVault1> {
     );
   }
 }
-

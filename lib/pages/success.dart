@@ -1,18 +1,23 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import '../utils/app_responsive.dart';
 
-class Success extends StatefulWidget {
-  const Success({super.key});
+class CommonSuccessScreen extends StatelessWidget {
+  final String imagePath;
+  final String title;
+  final String subTitle;
+  final String buttonText;
+  final String nextPath;
 
-  @override
-  State<Success> createState() => _SuccessState();
-}
-
-class _SuccessState extends State<Success> {
+  const CommonSuccessScreen({
+    super.key,
+    required this.imagePath,
+    required this.title,
+    required this.subTitle,
+    required this.buttonText,
+    required this.nextPath,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +32,7 @@ class _SuccessState extends State<Success> {
     );
   }
 
-  // ------------------ MOBILE (UNCHANGED) ------------------
+  // ---------------- MOBILE ----------------
   Widget _buildMobileLayout(BuildContext context, double w, double h) {
     return SafeArea(
       child: Column(
@@ -39,13 +44,13 @@ class _SuccessState extends State<Success> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Image.asset(
-                    'assets/images/new.png',
+                    imagePath,
                     width: w * 0.5,
                     height: h * 0.25,
                   ),
 
                   Text(
-                    'Payment Successful!',
+                    title,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
@@ -57,7 +62,7 @@ class _SuccessState extends State<Success> {
                   SizedBox(height: h * 0.02),
 
                   Text(
-                    'Your subscription plan has been\nsuccessfully activated!',
+                    subTitle,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white70,
@@ -86,9 +91,9 @@ class _SuccessState extends State<Success> {
                     borderRadius: BorderRadius.circular(40),
                   ),
                 ),
-                onPressed: () => context.go('/sp18'),
+                onPressed: () => context.go(nextPath),
                 child: Text(
-                  "Continue",
+                  buttonText,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: w * 0.045,
@@ -103,11 +108,10 @@ class _SuccessState extends State<Success> {
     );
   }
 
-  // ------------------ WEB UI ------------------
+  // ---------------- WEB ----------------
   Widget _buildWebLayout(BuildContext context, double w, double h) {
     return Stack(
       children: [
-        // Background + Blur
         Positioned.fill(
           child: Stack(
             children: [
@@ -129,7 +133,6 @@ class _SuccessState extends State<Success> {
           ),
         ),
 
-        // Center Card
         Center(
           child: Card(
             elevation: 16,
@@ -153,7 +156,7 @@ class _SuccessState extends State<Success> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Image.asset(
-                            'assets/images/new.png',
+                            imagePath,
                             width: w * 0.15,
                             height: h * 0.18,
                           ),
@@ -161,7 +164,7 @@ class _SuccessState extends State<Success> {
                           SizedBox(height: h * 0.02),
 
                           Text(
-                            'Payment Successful!',
+                            title,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
@@ -173,7 +176,7 @@ class _SuccessState extends State<Success> {
                           SizedBox(height: h * 0.02),
 
                           Text(
-                            'Your subscription plan has been\nsuccessfully activated!',
+                            subTitle,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white70,
@@ -196,9 +199,9 @@ class _SuccessState extends State<Success> {
                           borderRadius: BorderRadius.circular(40),
                         ),
                       ),
-                      onPressed: () => context.go('/sp18'),
+                      onPressed: () => context.go(nextPath),
                       child: Text(
-                        "Continue",
+                        buttonText,
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: w * 0.015,
@@ -216,4 +219,3 @@ class _SuccessState extends State<Success> {
     );
   }
 }
-

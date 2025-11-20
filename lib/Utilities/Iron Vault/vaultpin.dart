@@ -115,7 +115,14 @@ class _VaultpinState extends State<Vaultpin> {
 
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        context.go("/");
+                        context.go('/success',
+                          extra: {
+                            "image": "assets/images/new.png",
+                            "title": "Payment Successful!",
+                            "sub": "Your subscription has started!",
+                            "btn": "Continue",
+                            "path":"/success"
+                          },);
                       }
                     },
 
