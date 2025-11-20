@@ -10,6 +10,9 @@ class CommonSuccessScreen extends StatelessWidget {
   final String buttonText;
   final String nextPath;
 
+  // ⭐ ADDING THIS
+  final String fromPath;
+
   const CommonSuccessScreen({
     super.key,
     required this.imagePath,
@@ -17,6 +20,9 @@ class CommonSuccessScreen extends StatelessWidget {
     required this.subTitle,
     required this.buttonText,
     required this.nextPath,
+
+    // ⭐ DEFAULT VALUE ADDED
+    this.fromPath = "",
   });
 
   @override
@@ -91,7 +97,12 @@ class CommonSuccessScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(40),
                   ),
                 ),
-                onPressed: () => context.go(nextPath),
+
+                // ⭐ USE fromPath while navigating
+                onPressed: () => context.go(
+                  "$nextPath?fromPath=$fromPath",
+                ),
+
                 child: Text(
                   buttonText,
                   style: TextStyle(
@@ -199,7 +210,12 @@ class CommonSuccessScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(40),
                         ),
                       ),
-                      onPressed: () => context.go(nextPath),
+
+                      // ⭐ USE fromPath in web too
+                      onPressed: () => context.go(
+                        "$nextPath?fromPath=$fromPath",
+                      ),
+
                       child: Text(
                         buttonText,
                         style: TextStyle(

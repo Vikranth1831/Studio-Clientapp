@@ -231,11 +231,11 @@ class _PaymentsState extends State<Payments> {
               print("print");
               context.push('/success',
                 extra: {
-                  "image": "assets/images/new.png",
-                  "title": "Payment Successful!",
-                  "sub": "Your subscription has started!",
-                  "btn": "Continue",
-                  "path": "/home"
+                  "image": "assets/images/successgreen.png",
+                  "title": "Payment Done\nSuccessfully",
+                  "sub": "",
+                  "btn": "View Book",
+                  "path": "/viewBook"
                 },); // << CHANGE HERE
             } else {
               context.push('/success',
@@ -244,7 +244,7 @@ class _PaymentsState extends State<Payments> {
                   "title": "Payment Successful!",
                   "sub": "Your subscription has started!",
                   "btn": "Continue",
-                  "path": "/home"
+                  "path": "/dashboard"
                 },);
             }
           },

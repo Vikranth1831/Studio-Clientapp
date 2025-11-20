@@ -3,7 +3,10 @@ import 'package:clientapp_studio/Utilities/E-books/bookPaymentSuccess.dart';
 import 'package:clientapp_studio/Utilities/E-books/descriptionPage.dart';
 import 'package:clientapp_studio/Utilities/E-books/ebooksHome.dart';
 import 'package:clientapp_studio/Utilities/E-books/viewBook.dart';
+import 'package:clientapp_studio/Utilities/General%20Vault/generalStart.dart';
+import 'package:clientapp_studio/Utilities/General%20Vault/generalfiles.dart';
 import 'package:clientapp_studio/Utilities/General%20Vault/generalupload.dart';
+import 'package:clientapp_studio/Utilities/Id%20Vault/documentuploads.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/UploadPage.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/addnewfile.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/documents.dart';
@@ -98,6 +101,27 @@ final GoRouter appRouter = GoRouter(
       },
     ),
 
+    GoRoute(
+      path: "/",
+      pageBuilder: (context, state) {
+       // return buildSlideTransitionPage(Dashboard(), state);
+        return buildSlideTransitionPage(Documentuploads(), state);
+      },
+    ),
+    GoRoute(
+      path: "/general-start",
+      pageBuilder: (context, state) {
+       // return buildSlideTransitionPage(Dashboard(), state);
+        return buildSlideTransitionPage(GeneralVaultStart(), state);
+      },
+    ),
+    GoRoute(
+      path: "/general-files",
+      pageBuilder: (context, state) {
+       // return buildSlideTransitionPage(Dashboard(), state);
+        return buildSlideTransitionPage(GeneralFiles(), state);
+      },
+    ),
     GoRoute(
       path: "/viewBook",
       pageBuilder: (context, state) {
@@ -230,7 +254,7 @@ final GoRouter appRouter = GoRouter(
       },
     ),
    GoRoute(
-      path: '/',
+      path: '/dashboard',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Dashboard(), state);
       },
@@ -336,8 +360,9 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: '/otp',
-      pageBuilder: (context, state) {
-        return buildSlideTransitionPage(OtpScreen(), state);
+      builder: (context, state) {
+        final fromPath = state.extra as String;
+        return OtpScreen(fromPath: fromPath);
       },
     ),
     GoRoute(
@@ -353,16 +378,16 @@ final GoRouter appRouter = GoRouter(
       },
     ),
     GoRoute(
-      path: '/success',
+      path: "/success",
       builder: (context, state) {
-        final data = state.extra as Map<String, dynamic>;
+        final data = state.extra as Map<String, dynamic>?;
 
         return CommonSuccessScreen(
-          imagePath: data["image"],
-          title: data["title"],
-          subTitle: data["sub"],
-          buttonText: data["btn"],
-          nextPath: data["path"],
+          imagePath: data?["imagePath"] ?? "assets/images/successgreen.png",
+          title: data?["title"] ?? "Success",
+          subTitle: data?["subTitle"] ?? "",
+          buttonText: data?["buttonText"] ?? "Continue",
+          nextPath: data?["nextPath"] ?? "/dashboard",
         );
       },
     ),

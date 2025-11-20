@@ -118,10 +118,10 @@ class _VaultpinState extends State<Vaultpin> {
                         context.go('/success',
                           extra: {
                             "image": "assets/images/new.png",
-                            "title": "Payment Successful!",
+                            "title": "Verified Successfully",
                             "sub": "Your subscription has started!",
                             "btn": "Continue",
-                            "path":"/success"
+                            "path":"/otpcommon"
                           },);
                       }
                     },

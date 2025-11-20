@@ -59,7 +59,7 @@ class _GeneraluploadState extends State<Generalupload> {
             ),
           ),
 
-          SizedBox(height: h * 0.08),
+          SizedBox(height: h * 0.2),
 
           // ---------- Center Content ----------
           Center(
@@ -78,29 +78,30 @@ class _GeneraluploadState extends State<Generalupload> {
                 // ---------- DOTTED BORDER UPLOAD BUTTON ----------
                 GestureDetector(
                   onTap: () {
-                    context.push('/otp');   // ★ Using GoRouter push()
+                    context.push('/otp', extra: "/general-start");   // ★ Using GoRouter push()
                   },
                   child: DottedBorder(
                     color: const Color(0xffFEBE01),         // Gold
                     dashPattern: const [6, 4],
                     strokeWidth: 1,
                     borderType: BorderType.RRect,
-                    radius: const Radius.circular(4),
+                    radius: const Radius.circular(0),
 
                     child: Container(
-                      height: h * 0.12,
-                      width: w * 0.75,
+                      height: h * 0.1,
+                      width: w * 0.65,
                       decoration: BoxDecoration(
                         color: Colors.black,
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(0),
                       ),
 
                       child: const Center(
                         child: Text(
-                          "Upload New File",
+                          "Upload New ",
                           style: TextStyle(
                             fontFamily: "Inter",
                             fontSize: 16,
+                            fontWeight: FontWeight.bold,
                             color: Colors.white70,
                           ),
                         ),
