@@ -563,7 +563,7 @@ class DownloadConfirmationSheet extends StatelessWidget {
 
             /// Main Title
             const Text(
-              'You can download only once\nfor free',
+              'You  can download only once\nfor free',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Color(0xFF222222),
