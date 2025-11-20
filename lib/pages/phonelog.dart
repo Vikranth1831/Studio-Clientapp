@@ -135,7 +135,13 @@ class _LoginState extends State<Login> {
               ),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  context.push('/otp');
+                  context.push(
+                    '/otp',
+                    extra: {
+                      "isComing": true,
+                      "fromPath": "phonelog",
+                    },
+                  );
                 }
               },
               child: Text(
@@ -292,7 +298,13 @@ class _LoginState extends State<Login> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
 
-                          context.push('/otp', extra: true);                          }
+                          context.push(
+                            '/otp',
+                            extra: {
+                              "isComing": true,
+                              "fromPath": "phonelog",
+                            },
+                          );                    }
                       },
                       child: Text(
                         "Send OTP",

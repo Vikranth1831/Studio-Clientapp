@@ -223,12 +223,7 @@ class _UtilHomeState extends State<UtilHome> {
                       title: "General Vault",
                       icon: "assets/icons/Folder.png",
                       bgColor: const Color(0xFFFFF9E6),
-                      onTap: () => context.push('/ironvault', extra: {
-                        "image": "assets/images/Folder.png",
-                        "title": "General Vault",
-                        "sub": "Your personal upload space\nStart Uploading",
-                        "btn": "Next",
-                          "path":'/upload-new',}),
+                      onTap: () => context.push('/general-start'),
                       w: w,
                       h: h,
                       isweb: isweb,
@@ -239,9 +234,9 @@ class _UtilHomeState extends State<UtilHome> {
                       bgColor: const Color(0xFFFEBE01),
                       onTap: () => context.push('/ironvault', extra: {
                         "image": "assets/images/imagesh.png",
-                        "title": "Secure Document Vault",
+                        "title": "Secure Legacy Vault",
                         "sub": "Your Sensitive Documents Are Protected with\nMulti layer Security verification",
-                        "btn": "Access Iron Vault",
+                        "btn": "Legacy wallet",
                         "path": '/vaultpin',   // your custom next-page route
                       }),
                       w: w,

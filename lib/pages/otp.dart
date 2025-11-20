@@ -1,15 +1,16 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:clientapp_studio/utils/color_constants.dart';
 import 'package:clientapp_studio/utils/media_query_helper.dart';
-
 import '../utils/app_responsive.dart';
 
 class OtpScreen extends StatelessWidget {
   final bool isComingFromSignup;
-  OtpScreen({super.key,required this.isComingFromSignup});
+
+  final String fromPath;  // <---- RECEIVED HERE
+
+  OtpScreen({super.key, required this.fromPath,required this.isComingFromSignup});
 
   final List<TextEditingController> _otpControllers =
   List.generate(6, (index) => TextEditingController());
@@ -29,10 +30,11 @@ class OtpScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       body: isWeb ? buildWebLayout(context, h, w,isWeb,isComingFromSignup) : buildMobileLayout(context, h, w,isWeb),
     );
-  }
+        }
 
   // ------------------ MOBILE (UNCHANGED) ------------------
-  Widget buildMobileLayout(BuildContext context, double h, double w,bool isweb,) {
+
+  Widget buildMobileLayout(BuildContext context, double h, double w, bool isweb) {
     return SingleChildScrollView(
       child: SafeArea(
         child: Center(
@@ -41,19 +43,41 @@ class OtpScreen extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: h * 0.15),
-
                 Image.asset("assets/images/Layer1.png", width: w * 0.55),
-
                 SizedBox(height: h * 0.05),
 
-                otpSection(context, h, w,isweb),
+                otpSection(context, h, w, isweb),
 
                 SizedBox(height: h * 0.1),
 
                 GestureDetector(
                   onTap: () {
                     String otp = getOtp();
-                    context.push('/plans', extra: "Account Created Successfully");
+
+                    // 🔥 NAVIGATION LOGIC ADDED
+                    if (fromPath == "/general-start") {
+                        context.push(
+                          "/success",
+                          extra: {
+                            "imagePath": "assets/images/successgreen.png",
+                            "title": "Otp Verified \nSuccessful",
+                            "subTitle": "",
+                            "buttonText": "Continue",
+                            "nextPath": "/general-files",
+                          },
+                      );
+                    } else {
+                      context.push(
+                        "/success",
+                        extra: {
+                          "imagePath": "assets/images/success.png",
+                          "title": "Account Created Successfully",
+                          "subTitle": "You can now explore all features.",
+                          "buttonText": "Continue",
+                          "nextPath": "/plans",
+                        },
+                      );
+                    }
                   },
                   child: Container(
                     width: double.infinity,
@@ -112,6 +136,7 @@ class OtpScreen extends StatelessWidget {
   // ------------------ WEB LAYOUT ------------------
   Widget buildWebLayout(BuildContext context, double h, double w,bool isweb,
       bool comingfromsigning) {
+
     return Stack(
       children: [
         /// BLURRED BACKGROUND IMAGE
@@ -122,13 +147,13 @@ class OtpScreen extends StatelessWidget {
               Container(
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage( "assets/images/splash_image.png"),
+                    image: AssetImage("assets/images/splash_image.png"),
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
               BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4), // STRONG BLUR
+                filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                 child: Container(
                   color: Colors.black.withOpacity(0.4), // slight dark layer
                 ),
@@ -161,8 +186,15 @@ class OtpScreen extends StatelessWidget {
               ),
             ),
           ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            width: w,
+            height: h,
+            color: Colors.black.withOpacity(0.55),
+          ),
+        ),
 
-        /// CENTER CARD
         Center(
           child: Container(
             width: w * 0.32,
@@ -180,71 +212,130 @@ class OtpScreen extends StatelessWidget {
 
                 SizedBox(height: h * 0.03),
 
-                otpSection(context, h, w * 0.55,isweb), // reduce width inside card
-
-                SizedBox(height: h * 0.05),
-
-                GestureDetector(
-                  onTap: () {
-                    String otp = getOtp();
-                    context.push('/plans', extra: "Account Created Successfully");
-                  },
+                Card(
+                  elevation: 16,
+                  color: Colors.black.withOpacity(0.75),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
                   child: Container(
-                    width: double.infinity,
-                    height: h * 0.06,
-                    decoration: ShapeDecoration(
-                      color: Color(0xFFFEBE01),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(h * 0.03),
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Submit OTP",
-                        style: TextStyle(
-                          color: Color(0xFF333333),
-                          fontSize: h * 0.02,
-                          fontWeight: FontWeight.w600,
+                    width: w * 0.32,
+                    padding: EdgeInsets.symmetric(vertical: h * 0.03, horizontal: w * 0.02),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset("assets/images/Layer1.png", width: w * 0.18),
+                        SizedBox(height: h * 0.03),
+
+                        otpSection(context, h, w * 0.55,isweb), // reduce width inside card
+                        otpSection(context, h, w * 0.55, isweb),
+
+                        SizedBox(height: h * 0.05),
+
+                        GestureDetector(
+                          onTap: () {
+                            String otp = getOtp();
+                            context.push('/plans', extra: "Account Created Successfully");
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            height: h * 0.06,
+                            decoration: ShapeDecoration(
+                              color: Color(0xFFFEBE01),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(h * 0.03),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Submit OTP",
+                                style: TextStyle(
+                                  color: Color(0xFF333333),
+                                  fontSize: h * 0.02,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                        GestureDetector(
+                          onTap: () {
+                            String otp = getOtp();
+
+                            // 🔥 NAVIGATION USING fromPath
+                            if (fromPath == "/general-start") {
+                              context.push(
+                                "/success",
+                                extra: {
+                                  "imagePath": "assets/images/CheckCircle.png",
+                                  "title": "Verification Successful",
+                                  "subTitle": "Your identity has been verified",
+                                  "buttonText": "Continue",
+                                  "nextPath": "/general-files",
+                                },
+                              );
+                            } else {
+                              context.push('/plans', extra: "Account Created Successfully");
+                            }
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            height: h * 0.06,
+                            decoration: ShapeDecoration(
+                              color: Color(0xFFFEBE01),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(h * 0.03),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Submit OTP",
+                                style: TextStyle(
+                                  color: Color(0xFF333333),
+                                  fontSize: h * 0.02,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(height: h * 0.03),
+
+                        GestureDetector(
+                          onTap: () => context.push('/signin'),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Already have an account? ",
+                                  style: TextStyle(color: Colors.white70, fontSize: h * 0.018)),
+                              Text(
+                                "Sign In",
+                                style: TextStyle(
+                                  color: Color(0xFFFEBE01),
+                                  fontSize: h * 0.018,
+                                  fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: Color(0xFFFEBE01),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(height: h * 0.03),
+                      ],
                     ),
                   ),
                 ),
 
-                SizedBox(height: h * 0.03),
-
-                GestureDetector(
-                  onTap: () => context.push('/signin'),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Already have an account? ",
-                          style: TextStyle(color: Colors.white70, fontSize: h * 0.018)),
-                      Text(
-                        "Sign In",
-                        style: TextStyle(
-                          color: Color(0xFFFEBE01),
-                          fontSize: h * 0.018,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline,
-                          decorationColor: Color(0xFFFEBE01),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: h * 0.03),
-              ],
-            ),
-          ),
-        )
       ],
-    );
+    )
+    )
+    )
+    ]);
   }
 
-  // ------------------ OTP SECTION (same for both) ------------------
-  Widget otpSection(BuildContext context, double h, double w,bool isweb) {
+  // ------------------ OTP BOXES ------------------
+  Widget otpSection(BuildContext context, double h, double w, bool isweb) {
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -279,12 +370,11 @@ class OtpScreen extends StatelessWidget {
 
           SizedBox(height: h * 0.025),
 
-          /// OTP BOXES
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(6, (index) {
               return SizedBox(
-                width:(isweb) ? w* 0.07 :  w * 0.12,
+                width: (isweb) ? w * 0.07 : w * 0.12,
                 height: h * 0.065,
                 child: TextField(
                   controller: _otpControllers[index],
@@ -340,4 +430,3 @@ class OtpScreen extends StatelessWidget {
     );
   }
 }
-

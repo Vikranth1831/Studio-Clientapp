@@ -301,7 +301,7 @@ class _PlansState extends State<Plans> {
           backgroundColor: Color(0xffFEBE01),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
         ),
-        onPressed: selectedIndex != -1 ? () => context.push('/payments') : null,
+        onPressed: selectedIndex != -1 ? () => context.push('/payments',extra: {"fromBook" : false}) : null,
         child: Text(
           'Continue',
           style: TextStyle(

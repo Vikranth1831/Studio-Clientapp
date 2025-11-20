@@ -211,7 +211,7 @@ class _PaymentsState extends State<Payments> {
   // ---------------- CONTINUE BUTTON ----------------
   Widget continueButton(double w, double h, bool isWeb) {
     bool enableButton = selectedIndex != -1;
-    print(widget.fromBookPage);
+
 
     return SafeArea(
       child: SizedBox(
@@ -231,14 +231,15 @@ class _PaymentsState extends State<Payments> {
               print("print");
               context.push('/success',
                 extra: {
-                  "image": "assets/images/new.png",
-                  "title": "Payment Successful!",
-                  "sub": "Your subscription has started!",
-                  "btn": "Continue",
+
+                  "image": "assets/images/successgreen.png",
+                  "title": "Payment Done\nSuccessfully",
+                  "sub": "",
+                  "btn": "View Book",
                   "path": "/viewBook"
                 },); // << CHANGE HERE
             } else {
-              context.push('/success',
+              context.push('/dashboard',
                 extra: {
                   "image": "assets/images/new.png",
                   "title": "Payment Successful!",

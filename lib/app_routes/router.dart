@@ -3,7 +3,10 @@ import 'package:clientapp_studio/Utilities/E-books/bookPaymentSuccess.dart';
 import 'package:clientapp_studio/Utilities/E-books/descriptionPage.dart';
 import 'package:clientapp_studio/Utilities/E-books/ebooksHome.dart';
 import 'package:clientapp_studio/Utilities/E-books/viewBook.dart';
+import 'package:clientapp_studio/Utilities/General%20Vault/generalStart.dart';
+import 'package:clientapp_studio/Utilities/General%20Vault/generalfiles.dart';
 import 'package:clientapp_studio/Utilities/General%20Vault/generalupload.dart';
+import 'package:clientapp_studio/Utilities/Id%20Vault/documentuploads.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/UploadPage.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/addnewfile.dart';
 import 'package:clientapp_studio/Utilities/Iron%20Vault/documents.dart';
@@ -107,6 +110,26 @@ final GoRouter appRouter = GoRouter(
       },
     ),
 
+    GoRoute(
+      path: "/",
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Splash(), state);
+      },
+    ),
+    GoRoute(
+      path: "/general-start",
+      pageBuilder: (context, state) {
+       // return buildSlideTransitionPage(Dashboard(), state);
+        return buildSlideTransitionPage(GeneralVaultStart(), state);
+      },
+    ),
+    GoRoute(
+      path: "/general-files",
+      pageBuilder: (context, state) {
+       // return buildSlideTransitionPage(Dashboard(), state);
+        return buildSlideTransitionPage(GeneralFiles(), state);
+      },
+    ),
     GoRoute(
       path: "/viewBook",
       pageBuilder: (context, state) {
@@ -252,10 +275,19 @@ final GoRouter appRouter = GoRouter(
         return buildSlideTransitionPage(DownloadEvent(), state);
       },
     ),
-    GoRoute(
-      path: '/sp',
+
+GoRoute(
+path: '/sp',
+pageBuilder: (context, state) {
+return buildSlideTransitionPage(Splash(), state);
+},
+),
+
+
+   GoRoute(
+      path: '/dashboard',
       pageBuilder: (context, state) {
-        return buildSlideTransitionPage(Splash(), state);
+        return buildSlideTransitionPage(Dashboard(), state);
       },
     ),
     GoRoute(
@@ -366,14 +398,25 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/otp',
       pageBuilder: (context, state) {
-        final bool isComing = state.extra as bool;   // get boolean here
+        final extra = state.extra;
+
+        if (extra is! Map) {
+          throw Exception("Missing extra for /otp route");
+        }
+
+        final bool isComing = extra["isComing"] ?? false;
+        final String fromPath = extra["fromPath"] ?? "";
 
         return buildSlideTransitionPage(
-          OtpScreen(isComingFromSignup: isComing),
+          OtpScreen(
+            isComingFromSignup: isComing,
+            fromPath: fromPath,
+          ),
           state,
         );
       },
     ),
+
     GoRoute(
       path: '/splash',
       pageBuilder: (context, state) {
@@ -387,16 +430,16 @@ final GoRouter appRouter = GoRouter(
       },
     ),
     GoRoute(
-      path: '/success',
+      path: "/success",
       builder: (context, state) {
-        final data = state.extra as Map<String, dynamic>;
+        final data = state.extra as Map<String, dynamic>?;
 
         return CommonSuccessScreen(
-          imagePath: data["image"],
-          title: data["title"],
-          subTitle: data["sub"],
-          buttonText: data["btn"],
-          nextPath: data["path"],
+          imagePath: data?["imagePath"] ?? "assets/images/successgreen.png",
+          title: data?["title"] ?? "Success",
+          subTitle: data?["subTitle"] ?? "",
+          buttonText: data?["buttonText"] ?? "Continue",
+          nextPath: data?["nextPath"] ?? "/dashboard",
         );
       },
     ),
