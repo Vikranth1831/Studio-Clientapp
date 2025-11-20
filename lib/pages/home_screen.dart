@@ -572,20 +572,26 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(width: w * 0.03),
 
             /// NOTIFICATION CIRCLE
-            Container(
-              width: (isWeb) ? w * 0.06 : w * 0.09,
-              height: (isWeb) ? h * 0.06 : w * 0.09,
-              decoration: ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(width: 1, color: Color(0xFF372901)),
-                  borderRadius: BorderRadius.circular(50),
+            InkWell(
+              onTap: ()
+              {
+                context.push('/notification');
+              },
+              child: Container(
+                width: (isWeb) ? w * 0.06 : w * 0.09,
+                height: (isWeb) ? h * 0.06 : w * 0.09,
+                decoration: ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(width: 1, color: Color(0xFF372901)),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
                 ),
-              ),
-              child: Center(
-                child: SizedBox(
-                  width: (isWeb) ? w * 0.04 : w * 0.06,
-                  height: (isWeb) ? w * 0.04 : w * 0.06,
-                  child: SvgPicture.asset('assets/icons/notification.svg'),
+                child: Center(
+                  child: SizedBox(
+                    width: (isWeb) ? w * 0.04 : w * 0.06,
+                    height: (isWeb) ? w * 0.04 : w * 0.06,
+                    child: SvgPicture.asset('assets/icons/notification.svg'),
+                  ),
                 ),
               ),
             ),

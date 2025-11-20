@@ -2,6 +2,7 @@ import 'package:clientapp_studio/Components/CutomAppBar.dart';
 import 'package:clientapp_studio/utils/app_responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class SetMenu extends StatefulWidget {
   const SetMenu({super.key});
@@ -63,7 +64,23 @@ class _SetMenuState extends State<SetMenu> {
             return Padding(
               padding: EdgeInsets.only(bottom: h * 0.015),
               child: InkWell(
-                onTap: menuItems[index]["onTap"],
+                onTap:()
+                {
+                  if(menuItems[index]['title']=="Change Email")
+                    {
+                      if(AppResponsive.isDesktop(context))
+                        {
+                          context.push('/change_email_home');
+                        }
+                    }
+                  if(menuItems[index]['title']=="Download History")
+                  {
+                    if(AppResponsive.isDesktop(context))
+                    {
+                      context.push('/download_history'); 
+                    }
+                  }
+                },
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: w * 0.04,
                       vertical: (isWeb) ? h * 0.0 :  h * 0.018),

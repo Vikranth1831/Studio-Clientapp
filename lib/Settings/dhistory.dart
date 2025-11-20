@@ -59,7 +59,7 @@ class _DownLoadHistoryState extends State<DownLoadHistory> {
                       history[index]["title"],
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: w * 0.045,
+                        fontSize: 15,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -71,7 +71,7 @@ class _DownLoadHistoryState extends State<DownLoadHistory> {
                       history[index]["date"],
                       style: TextStyle(
                         color: Colors.white54,
-                        fontSize: w * 0.036,
+                        fontSize: 10,
                       ),
                     ),
                   ],

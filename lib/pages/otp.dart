@@ -8,7 +8,8 @@ import 'package:clientapp_studio/utils/media_query_helper.dart';
 import '../utils/app_responsive.dart';
 
 class OtpScreen extends StatelessWidget {
-  OtpScreen({super.key});
+  final bool isComingFromSignup;
+  OtpScreen({super.key,required this.isComingFromSignup});
 
   final List<TextEditingController> _otpControllers =
   List.generate(6, (index) => TextEditingController());
@@ -26,12 +27,12 @@ class OtpScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      body: isWeb ? buildWebLayout(context, h, w,isWeb) : buildMobileLayout(context, h, w,isWeb),
+      body: isWeb ? buildWebLayout(context, h, w,isWeb,isComingFromSignup) : buildMobileLayout(context, h, w,isWeb),
     );
   }
 
   // ------------------ MOBILE (UNCHANGED) ------------------
-  Widget buildMobileLayout(BuildContext context, double h, double w,bool isweb) {
+  Widget buildMobileLayout(BuildContext context, double h, double w,bool isweb,) {
     return SingleChildScrollView(
       child: SafeArea(
         child: Center(
@@ -109,10 +110,12 @@ class OtpScreen extends StatelessWidget {
   }
 
   // ------------------ WEB LAYOUT ------------------
-  Widget buildWebLayout(BuildContext context, double h, double w,bool isweb) {
+  Widget buildWebLayout(BuildContext context, double h, double w,bool isweb,
+      bool comingfromsigning) {
     return Stack(
       children: [
         /// BLURRED BACKGROUND IMAGE
+        if(comingfromsigning)
         Positioned.fill(
           child: Stack(
             children: [
@@ -127,7 +130,7 @@ class OtpScreen extends StatelessWidget {
               BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4), // STRONG BLUR
                 child: Container(
-                  color: Colors.black.withOpacity(0.25), // slight dark layer
+                  color: Colors.black.withOpacity(0.4), // slight dark layer
                 ),
               ),
             ],
@@ -135,89 +138,104 @@ class OtpScreen extends StatelessWidget {
         ),
 
 
-        /// BOTTOM BLACKISH OVERLAY
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            width: w,
-            height: h,
-            color: Colors.black.withOpacity(0.55),
+        if(comingfromsigning)
+
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width: w,
+              height: h * 1,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Color.fromARGB(200, 0, 0, 0),   // strong black at bottom
+                    Color.fromARGB(120, 0, 0, 0),   // fading
+                    Color.fromARGB(120, 0, 0, 0),   // fading
+
+                    Color.fromARGB(20, 0, 0, 0),    // very light
+                    Colors.transparent,             // smooth end
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
 
         /// CENTER CARD
         Center(
-          child: Card(
-            elevation: 16,
-            color: Colors.black.withOpacity(0.75),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-            child: Container(
-              width: w * 0.32,
-              padding: EdgeInsets.symmetric(vertical: h * 0.03, horizontal: w * 0.02),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset("assets/images/Layer1.png", width: w * 0.18),
-
-                  SizedBox(height: h * 0.03),
-
-                  otpSection(context, h, w * 0.55,isweb), // reduce width inside card
-
-                  SizedBox(height: h * 0.05),
-
-                  GestureDetector(
-                    onTap: () {
-                      String otp = getOtp();
-                      context.push('/plans', extra: "Account Created Successfully");
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: h * 0.06,
-                      decoration: ShapeDecoration(
-                        color: Color(0xFFFEBE01),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(h * 0.03),
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Submit OTP",
-                          style: TextStyle(
-                            color: Color(0xFF333333),
-                            fontSize: h * 0.02,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: h * 0.03),
-
-                  GestureDetector(
-                    onTap: () => context.push('/signin'),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Already have an account? ",
-                            style: TextStyle(color: Colors.white70, fontSize: h * 0.018)),
-                        Text(
-                          "Sign In",
-                          style: TextStyle(
-                            color: Color(0xFFFEBE01),
-                            fontSize: h * 0.018,
-                            fontWeight: FontWeight.bold,
-                            decoration: TextDecoration.underline,
-                            decorationColor: Color(0xFFFEBE01),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  SizedBox(height: h * 0.03),
-                ],
+          child: Container(
+            width: w * 0.32,
+            padding: const EdgeInsets.all(32),
+            decoration: ShapeDecoration(
+              color: Colors.white.withValues(alpha: 0.10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
               ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset("assets/images/Layer1.png", width: w * 0.18),
+
+                SizedBox(height: h * 0.03),
+
+                otpSection(context, h, w * 0.55,isweb), // reduce width inside card
+
+                SizedBox(height: h * 0.05),
+
+                GestureDetector(
+                  onTap: () {
+                    String otp = getOtp();
+                    context.push('/plans', extra: "Account Created Successfully");
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: h * 0.06,
+                    decoration: ShapeDecoration(
+                      color: Color(0xFFFEBE01),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(h * 0.03),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Submit OTP",
+                        style: TextStyle(
+                          color: Color(0xFF333333),
+                          fontSize: h * 0.02,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: h * 0.03),
+
+                GestureDetector(
+                  onTap: () => context.push('/signin'),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Already have an account? ",
+                          style: TextStyle(color: Colors.white70, fontSize: h * 0.018)),
+                      Text(
+                        "Sign In",
+                        style: TextStyle(
+                          color: Color(0xFFFEBE01),
+                          fontSize: h * 0.018,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                          decorationColor: Color(0xFFFEBE01),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: h * 0.03),
+              ],
             ),
           ),
         )

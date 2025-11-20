@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:clientapp_studio/utils/app_responsive.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart'; // Only if using GoRouter
+import 'package:go_router/go_router.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -175,7 +175,7 @@ class _LoginState extends State<Login> {
                 BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4), // STRONG BLUR
                   child: Container(
-                    color: Colors.black.withOpacity(0.25), // slight dark layer
+                    color: Colors.black.withOpacity(0.4), // slight dark layer
                   ),
                 ),
               ],
@@ -183,121 +183,128 @@ class _LoginState extends State<Login> {
           ),
 
 
-          /// BOTTOM BLACKISH OVERLAY
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
               width: width,
-              height: height * 0.45,
-              color: Colors.black.withOpacity(0.55),
+              height: height * 1,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Color.fromARGB(200, 0, 0, 0),   // strong black at bottom
+                    Color.fromARGB(120, 0, 0, 0),   // fading
+                    Color.fromARGB(120, 0, 0, 0),   // fading
+
+                    Color.fromARGB(20, 0, 0, 0),    // very light
+                    Colors.transparent,             // smooth end
+                  ],
+                ),
+              ),
             ),
           ),
 
           /// CENTER CARD
           Center(
-            child: Card(
-              color: Colors.black.withOpacity(0.7),
-              elevation: 12,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Container(
-                width: width * 0.32,
-                padding: EdgeInsets.symmetric(
-                  horizontal: width * 0.02,
-                  vertical: height * 0.03,
+            child: Container(
+              width: width * 0.32,
+              padding: const EdgeInsets.all(32),
+              decoration: ShapeDecoration(
+                color: Colors.white.withValues(alpha: 0.10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset(
-                      'assets/images/log.png',
-                      width: width * 0.18,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    'assets/images/log.png',
+                    width: width * 0.18,
+                  ),
+
+                  const SizedBox(height: 15),
+
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Hello!",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: width * 0.018,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                  ),
 
-                    const SizedBox(height: 15),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Enter your phone number",
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: width * 0.012,
+                      ),
+                    ),
+                  ),
 
-                    Align(
-                      alignment: Alignment.centerLeft,
+                  const SizedBox(height: 15),
+
+                  /// PHONE FIELD
+                  TextFormField(
+                    controller: _phoneController,
+                    keyboardType: TextInputType.phone,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: 'Enter your phone number',
+                      hintStyle: const TextStyle(color: Colors.white54),
+                      filled: true,
+                      fillColor: Colors.grey[900],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your phone number';
+                      } else if (value.length != 10) {
+                        return 'Enter a valid 10-digit number';
+                      }
+                      return null;
+                    },
+                  ),
+
+
+                  const SizedBox(height: 25),
+
+                  SizedBox(
+                    width: double.infinity,
+                    height: height * 0.08,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amber,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                      ),
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+
+                          context.push('/otp', extra: true);                          }
+                      },
                       child: Text(
-                        "Hello!",
+                        "Send OTP",
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: width * 0.018,
+                          color: Colors.black,
+                          fontSize: width * 0.014,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Enter your phone number",
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: width * 0.012,
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 15),
-
-                    /// PHONE FIELD
-                    TextFormField(
-                      controller: _phoneController,
-                      keyboardType: TextInputType.phone,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        hintText: 'Enter your phone number',
-                        hintStyle: const TextStyle(color: Colors.white54),
-                        filled: true,
-                        fillColor: Colors.grey[900],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your phone number';
-                        } else if (value.length != 10) {
-                          return 'Enter a valid 10-digit number';
-                        }
-                        return null;
-                      },
-                    ),
-
-
-                    const SizedBox(height: 25),
-
-                    SizedBox(
-                      width: double.infinity,
-                      height: height * 0.08,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.amber,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                        ),
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-
-                            context.push('/otp');
-                          }
-                        },
-                        child: Text(
-                          "Send OTP",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: width * 0.014,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
           ),

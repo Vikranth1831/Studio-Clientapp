@@ -235,7 +235,7 @@ class _PaymentsState extends State<Payments> {
                   "title": "Payment Successful!",
                   "sub": "Your subscription has started!",
                   "btn": "Continue",
-                  "path": "/home"
+                  "path": "/viewBook"
                 },); // << CHANGE HERE
             } else {
               context.push('/success',
@@ -244,7 +244,7 @@ class _PaymentsState extends State<Payments> {
                   "title": "Payment Successful!",
                   "sub": "Your subscription has started!",
                   "btn": "Continue",
-                  "path": "/home"
+                  "path": "/dashboard"
                 },);
             }
           },

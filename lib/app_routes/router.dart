@@ -15,7 +15,9 @@ import 'package:clientapp_studio/Utilities/Legacy%20Wallet/legacyHome.dart';
 import 'package:clientapp_studio/Utilities/Legacy%20Wallet/vaultUpload.dart';
 import 'package:clientapp_studio/Utilities/Legacy%20Wallet/viewimage.dart';
 import 'package:clientapp_studio/pages/VideoPlayer.dart';
+import 'package:clientapp_studio/pages/change_email_home.dart';
 import 'package:clientapp_studio/pages/dashboard.dart';
+import 'package:clientapp_studio/pages/download_event.dart';
 import 'package:clientapp_studio/pages/home_screen.dart';
 import 'package:clientapp_studio/Settings/dhistory.dart';
 import 'package:clientapp_studio/Settings/settingsmenu.dart';
@@ -67,6 +69,13 @@ final GoRouter appRouter = GoRouter(
   // observers: [CrashlyticsNavObserver()],
   // overridePlatformDefaultLocation: false,
   routes: [
+
+    GoRoute(
+      path: '/',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Splash(), state);
+      },
+    ),
     GoRoute(
       path: "/view-legacy-item",
       builder: (context, state) {
@@ -103,6 +112,20 @@ final GoRouter appRouter = GoRouter(
       pageBuilder: (context, state) {
        // return buildSlideTransitionPage(Dashboard(), state);
         return buildSlideTransitionPage(Viewbook(), state);
+      },
+    ),
+    GoRoute(
+      path: "/change_email_home",
+      pageBuilder: (context, state) {
+        // return buildSlideTransitionPage(Dashboard(), state);
+        return buildSlideTransitionPage(ChangeEmailHome(), state);
+      },
+    ),
+    GoRoute(
+      path: "/notification",
+      pageBuilder: (context, state) {
+        // return buildSlideTransitionPage(Dashboard(), state);
+        return buildSlideTransitionPage(NotificationScreen(), state);
       },
     ),GoRoute(
       path: "/book-payment-summary",
@@ -224,15 +247,15 @@ final GoRouter appRouter = GoRouter(
       },
     ),
     GoRoute(
+      path: '/download_event',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(DownloadEvent(), state);
+      },
+    ),
+    GoRoute(
       path: '/sp',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Splash(), state);
-      },
-    ),
-   GoRoute(
-      path: '/',
-      pageBuilder: (context, state) {
-        return buildSlideTransitionPage(Dashboard(), state);
       },
     ),
     GoRoute(
@@ -240,7 +263,13 @@ final GoRouter appRouter = GoRouter(
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Generalupload(), state);
       },
-    ), GoRoute(
+    ),
+    GoRoute(
+      path: '/download_history',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(DownLoadHistory(), state);
+      },
+    ),GoRoute(
       path: '/dashboard',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Dashboard(), state);
@@ -337,7 +366,12 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/otp',
       pageBuilder: (context, state) {
-        return buildSlideTransitionPage(OtpScreen(), state);
+        final bool isComing = state.extra as bool;   // get boolean here
+
+        return buildSlideTransitionPage(
+          OtpScreen(isComingFromSignup: isComing),
+          state,
+        );
       },
     ),
     GoRoute(
