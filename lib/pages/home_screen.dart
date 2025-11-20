@@ -146,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
     {"title": "Most Watched Movies", "data": preweddingData},
   ];
 
-  bool isEmpty = true;
+  bool isEmpty = false;
   bool isott = false;
 
   @override
@@ -227,11 +227,17 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: newMoviesList.length,
         separatorBuilder: (_, __) => SizedBox(width: w * 0.04),
         itemBuilder: (context, index) {
-          return Container(
-            height: (isWeb) ? h * 0.4 : h * 0.3,
-            // width: w * 0.45,
-            width: (isWeb) ? w * 0.15 : w * 0.45,
-            child: Image.asset(newMoviesList[index]['image'], fit: BoxFit.fill),
+          return InkWell(
+            onTap: ()
+            {
+              context.push('/movie_details');
+            },
+            child: Container(
+              height: (isWeb) ? h * 0.4 : h * 0.3,
+              // width: w * 0.45,
+              width: (isWeb) ? w * 0.15 : w * 0.45,
+              child: Image.asset(newMoviesList[index]['image'], fit: BoxFit.fill),
+            ),
           );
         },
       ),
