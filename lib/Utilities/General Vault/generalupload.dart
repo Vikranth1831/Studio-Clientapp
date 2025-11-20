@@ -78,7 +78,13 @@ class _GeneraluploadState extends State<Generalupload> {
                 // ---------- DOTTED BORDER UPLOAD BUTTON ----------
                 GestureDetector(
                   onTap: () {
-                    context.push('/otp', extra: "/general-start");   // ★ Using GoRouter push()
+                    context.push(
+                      '/otp',
+                      extra: {
+                        "isComing": true,
+                        "fromPath":"/general-start",
+                      },
+                    );       // ★ Using GoRouter push()
                   },
                   child: DottedBorder(
                     color: const Color(0xffFEBE01),         // Gold

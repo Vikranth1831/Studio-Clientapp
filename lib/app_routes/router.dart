@@ -110,12 +110,7 @@ final GoRouter appRouter = GoRouter(
       },
     ),
 
-    GoRoute(
-      path: "/",
-      pageBuilder: (context, state) {
-        return buildSlideTransitionPage(Splash(), state);
-      },
-    ),
+
     GoRoute(
       path: "/general-start",
       pageBuilder: (context, state) {
@@ -276,12 +271,7 @@ final GoRouter appRouter = GoRouter(
       },
     ),
 
-GoRoute(
-path: '/sp',
-pageBuilder: (context, state) {
-return buildSlideTransitionPage(Splash(), state);
-},
-),
+
 
 
    GoRoute(
@@ -343,7 +333,7 @@ return buildSlideTransitionPage(Splash(), state);
         );
       },
     ),
-    GoRoute(
+     GoRoute(
       path: '/send_studio',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(SendingStudio(), state);
