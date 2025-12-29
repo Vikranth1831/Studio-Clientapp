@@ -253,7 +253,7 @@ class _PaymentsState extends State<Payments> {
             "Continue",
             style: TextStyle(
                 color: Colors.black,
-                fontSize: isWeb ? w * 0.018 : w * 0.045,
+                fontSize: isWeb ? w * 0.014 : w * 0.045,
                 fontWeight: FontWeight.bold),
           ),
         ),
