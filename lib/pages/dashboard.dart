@@ -125,7 +125,7 @@ class _DashboardState extends State<Dashboard> {
                       onTap: () => _onItemTapped(i),
                       child: Container(
                         padding: EdgeInsets.symmetric(
-                          vertical: (h * 0.018).clamp(10, 20),
+                          vertical: (h * 0.067).clamp(10, 20),
                         ),
                         color: _selectedIndex == i
                             ? Colors.black.withOpacity(0.3)

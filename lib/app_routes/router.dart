@@ -19,6 +19,7 @@ import 'package:clientapp_studio/Utilities/Legacy%20Wallet/vaultUpload.dart';
 import 'package:clientapp_studio/Utilities/Legacy%20Wallet/viewimage.dart';
 import 'package:clientapp_studio/pages/VideoPlayer.dart';
 import 'package:clientapp_studio/pages/change_email_home.dart';
+import 'package:clientapp_studio/pages/create_vault.dart';
 import 'package:clientapp_studio/pages/dashboard.dart';
 import 'package:clientapp_studio/pages/download_event.dart';
 import 'package:clientapp_studio/pages/home_screen.dart';
