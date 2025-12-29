@@ -93,7 +93,6 @@ final GoRouter appRouter = GoRouter(
       },
     ),
 
-
     GoRoute(
       path: '/legacy-upload',
       builder: (context, state) {
